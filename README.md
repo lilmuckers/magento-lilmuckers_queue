@@ -14,7 +14,7 @@ Each queue has it's own handler, so multiple tasks that are a part of the same q
 
 ## Usage
 
-### Creating a queue handlerm defining workersm, and sending a task to the queue
+### Creating a queue handler, defining workers, and sending a task to the queue
  * Define a queue in you modules `config.xml`, with the workers that exist in that queue. All workers are run as `singletons`.
 
 ```xml
