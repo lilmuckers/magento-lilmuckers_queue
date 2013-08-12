@@ -35,17 +35,17 @@ Each queue has it's own handler, so multiple tasks that are a part of the same q
     
 </config>
    ```
- * Call the queue handler
+ * Call the queue handler  
   ```php
 <?php
 $_queue = Mage::helper('lilqueue')->getQueue('queueName');
   ```
- * Generate a task, providing the task identifier, the data for the task to use, and the store to provide to the task to run with.
+ * Generate a task, providing the task identifier, the data for the task to use, and the store to provide to the task to run with.  
   ```php
 <?php
 $_task = Mage::helper('lilqueue')->createTask('taskName', array('data'=>'to provide', 'to'=>'the worker'), $storeToRunAs);
   ```
- * Send the task to the queue
+ * Send the task to the queue  
   ```php
 <?php
 $_queue->addTask($_task);
