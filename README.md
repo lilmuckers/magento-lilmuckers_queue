@@ -17,7 +17,7 @@ Each queue has it's own handler, so multiple tasks that are a part of the same q
 ### Creating a queue handlerm defining workersm, and sending a task to the queue
  * Define a queue in you modules `config.xml`, with the workers that exist in that queue. All workers are run as `singletons`.
 
-  ```xml
+```xml
 <?xml version="1.0"?>
 <config>
 ...
@@ -35,29 +35,29 @@ Each queue has it's own handler, so multiple tasks that are a part of the same q
     </queues>
     
 </config>
-   ```
+```
    
  * Call the queue handler  
 
-  ```php
+```php
 <?php
 $_queue = Mage::helper('lilqueue')->getQueue('queueName');
-  ```
+```
   
 
  * Generate a task, providing the task identifier, the data for the task to use, and the store to provide to the task to run with.  
 
-  ```php
+```php
 <?php
 $_task = Mage::helper('lilqueue')->createTask('taskName', array('data'=>'to provide', 'to'=>'the worker'), $storeToRunAs);
-  ```
+```
 
  * Send the task to the queue  
 
-  ```php
+```php
 <?php
 $_queue->addTask($_task);
-  ```
+```
   
 ### Workers
 Workers are even easier, as they're just a method that receive the task as an argument. They must set a status to the task once they're done. 
