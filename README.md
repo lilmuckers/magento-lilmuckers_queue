@@ -92,3 +92,10 @@ class My_Module_Model_Worker extends Lilmuckers_Queue_Model_Worker_Abstract
     }
 }
 ```
+
+### Running the workers
+The workers are run using a shell script located within `/shell/`, and you can run all queues, or a subset of queues, allowing you to split the different queues to different servers, or whatever arrangement you so wish, to allow maximum flexibility. The script can also be run multiple times to allow for multiple workers
+
+```bash
+$ php /path/to/magento/shell/queue.php --watch <queues> 
+```
