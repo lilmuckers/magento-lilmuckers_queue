@@ -3,7 +3,7 @@
  * Magento Simple Asyncronous Queuing Module
  *
  * @category    Lilmuckers
- * @package     Lilmuckers_Shell
+ * @package     Lilmuckers_Queue
  * @copyright   Copyright (c) 2013 Patrick McKinley (http://www.patrick-mckinley.com)
  * @license     http://choosealicense.com/licenses/mit/
  */
