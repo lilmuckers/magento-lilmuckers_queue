@@ -60,6 +60,93 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     protected $_status = 0;
     
     /**
+     * The priority for the task
+     * 
+     * @var int
+     */
+    protected $_priority;
+    
+    /**
+     * The ttr (or expected lifespan) for the task
+     * 
+     * @var int
+     */
+    protected $_ttr;
+    
+    /**
+     * The time to delay a task for
+     * 
+     * @var int
+     */
+    protected $_delay;
+    
+    /**
+     * Set the priority of the task
+     * 
+     * @param int $priority
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    public function setPriority($priority)
+    {
+        $this->_priority = $priority;
+        return $this;
+    }
+    
+    /**
+     * Get the priority of the task
+     * 
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->_priority;
+    }
+    
+    /**
+     * Set the ttr of the task
+     * 
+     * @param int $ttr
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    public function setTtr($ttr)
+    {
+        $this->_ttr = $ttr;
+        return $this;
+    }
+    
+    /**
+     * Get the ttr of the task
+     * 
+     * @return int
+     */
+    public function getTtr()
+    {
+        return $this->_ttr;
+    }
+    
+    /**
+     * Set the delay of the task
+     * 
+     * @param int $delay
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    public function setDelay($delay)
+    {
+        $this->_delay = $delay;
+        return $this;
+    }
+    
+    /**
+     * Get the delay of the task
+     * 
+     * @return int
+     */
+    public function getDelay()
+    {
+        return $this->_delay;
+    }
+    
+    /**
      * Set the status of the task for the queue to read
      * 
      * @param int $status

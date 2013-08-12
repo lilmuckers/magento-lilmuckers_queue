@@ -90,17 +90,14 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
      * 
      * @param string $queue
      * @param Lilmuckers_Queue_Model_Queue_Task $task
-     * @param int $priority
-     * @param int $delay
-     * @param int $ttr
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
-    protected function _addToQueue($queue, Lilmuckers_Queue_Model_Queue_Task $task, $priority = null, $delay = null, $ttr = null)
+    protected function _addToQueue($queue, Lilmuckers_Queue_Model_Queue_Task $task)
     {
         //load the default prioriy, delay and ttr data
-        $_priority = is_null($priority)  ? $this->_priority : $priority;
-        $_delay    = is_null($delay)     ? $this->_delay    : $delay;
-        $_ttr      = is_null($ttr)       ? $this->_ttr      : $ttr;
+        $_priority = is_null($task->getPriority())  ? $this->_priority : $task->getPriority();
+        $_delay    = is_null($task->getDelay())     ? $this->_delay    : $task->getDelay();
+        $_ttr      = is_null($task->getTtr())       ? $this->_ttr      : $task->getTtr();
         
         //load the json string for the task
         $_data = $task->exportData();

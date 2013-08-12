@@ -14,18 +14,15 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
      * 
      * @param string $queue
      * @param Lilmuckers_Queue_Model_Queue_Task $task
-     * @param int $priority
-     * @param int $delay
-     * @param int $ttr
      * @return Lilmuckers_Queue_Model_Queue_Abstract
      */
-    public function addTask($queue, Lilmuckers_Queue_Model_Queue_Task $task, $priority = null, $delay = null, $ttr = null)
+    public function addTask($queue, Lilmuckers_Queue_Model_Queue_Task $task)
     {
         //ensure the queue connection is loaded
         $this->_loadConnection();
         
         //queue this stuff up
-        $this->_addToQueue($queue, $task, $priority, $$ttr);
+        $this->_addToQueue($queue, $task);
         
         return $this;
     }
@@ -42,12 +39,9 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
      * 
      * @param string $queue
      * @param Lilmuckers_Queue_Model_Queue_Task $task
-     * @param int $priority
-     * @param int $delay
-     * @param int $ttr
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
-    abstract protected function _addToQueue($queue, Lilmuckers_Queue_Model_Queue_Task $task, $priority = null, $delay = null, $ttr = null);
+    abstract protected function _addToQueue($queue, Lilmuckers_Queue_Model_Queue_Task $task);
     
     /**
      * Get the next task from the queue
