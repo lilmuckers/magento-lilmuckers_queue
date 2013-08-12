@@ -55,8 +55,11 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
             //get the list of queues to watch
             $_queues = $this->_getQueues($_queues);
             
-            $this->_watch(array_keys($_queues));
+             return $this->_watch(array_keys($_queues));
         }
+        
+        //if nothing called, just do the help
+        $this->usageHelp();
         
         return $this;
     }
