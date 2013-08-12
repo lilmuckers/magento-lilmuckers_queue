@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Lilmuckers_Queue>
+            <version>0.2.1</version>
+        </Lilmuckers_Queue>
+    </modules>
+    <global>
+    
+        <models>
+            <lilqueue>
+                <class>Lilmuckers_Queue_Model</class>
+            </lilqueue>
+        </models>
+        
+        <helpers>
+            <lilqueue>
+                <class>Lilmuckers_Queue_Helper</class>
+            </lilqueue>
+        </helpers>
+        
+        <queue>
+            <adapters>
+                <beanstalkd>
+                    <class>lilqueue/adapter_beanstalk</class>
+                </beanstalkd>
+            </adapters>
+            <beanstalkd>
+                <servers>
+                    <server>
+                        <port>11300</port>
+                        <priority>1024</priority>
+                        <delay>0</delay>
+                        <ttr>60</ttr>
+                    </server>
+                </servers>
+            </beanstalkd>
+        </queue>
+        
+    </global>
+    
+    <queues>
+        <default>
+            <label>Default Queue</label>
+            <class>lilqueue/queue</class>
+            <workers>
+                <test>
+                    <class>lilqueue/worker</class>
+                    <method>test</method>
+                </test>
+            </workers>
+        </default>
+    </queues>
+    
+</config>
