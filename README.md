@@ -13,7 +13,7 @@ Each queue has it's own handler, so multiple tasks that are a part of the same q
   * Using Pheanstalk - https://github.com/pda/pheanstalk/
   
 ## Installation
-I build this with (modgit) [https://github.com/jreinke/modgit] in mind - and so if you have modgit installedL
+I built this with **modgit** (https://github.com/jreinke/modgit) in mind - and so if you have modgit installed:
 
 ```bash
 $ modgit add lilqueue https://github.com/lilmuckers/magento-lilmuckers_queue.git
