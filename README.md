@@ -52,6 +52,15 @@ $_queue = Mage::helper('lilqueue')->getQueue('queueName');
 $_task = Mage::helper('lilqueue')->createTask('taskName', array('data'=>'to provide', 'to'=>'the worker'), $storeToRunAs);
 ```
 
+ * **[optional]** Set a priority, delay and ttr (time-to-run - time limit for the task to be run before it's reassigned to the queue)
+
+```php
+<?php
+$_task->setPriority(100)
+    ->setDelay(60)
+    ->setTtr(60);
+```
+
  * Send the task to the queue  
 
 ```php
