@@ -14,6 +14,31 @@ Each queue has it's own handler, so multiple tasks that are a part of the same q
 
 ## Usage
 
+### Configuration
+The configuration is similar to the `cache` configuration, and is held within the `local.xml` file. For a very simple **beanstalkd** configuration you'd merge this into your `local.xml`:
+
+```xml
+<?xml version="1.0"?>
+<config>
+    <global>
+    
+        <queue>
+            <backend>beanstalkd</backend>
+            <beanstalkd>
+                <servers>
+                    <server>
+                        <host>127.0.0.1</host>
+                    </server>
+                </servers>
+            </beanstalkd>
+        </queue>
+        
+    </global>
+
+</config>
+
+```
+
 ### Creating a queue handler, defining workers, and sending a task to the queue
  * Define a queue in you modules `config.xml`, with the workers that exist in that queue. All workers are run as `singletons`.
 
@@ -108,6 +133,53 @@ The workers are run using a shell script located within `/shell/`, and you can r
 ```bash
 $ php /path/to/magento/shell/queue.php --watch <queues> 
 ```
+
+## Building An Adapter
+If you wish to use the framework with another queueing backend then you'll need to build an adapter to support the interface between the module and the queueing system.
+
+### 1. Define the adapter model
+First off you need to define the adapter model within the `config.xml` (preferably of your own module - but if you're contributing to this module, then... woo!)
+```xml
+<?xml version="1.0"?>
+<config>
+    <global>
+    
+        <queue>
+            <adapters>
+                <adapterName>
+                    <class>module/adapter_path</class>
+                </adapterName>
+            </adapters>
+        </queue>
+        
+    </global>
+</config>
+```
+
+### 2. Build the model class 
+Now you need to build the adapter class. The abstract/interface was built with the **beanstalkd** methodology in mind, so to be truly compatible you'll have to come up with equivilent functionality. This should extend `Lilmuckers_Queue_Model_Adapter_Abstract`. See that class for a list of abstract methods.
+
+### 3. Configure Module
+Within the `local.xml` you'll now need to set the **backend value** to the code for the adapter you assigned in step 1 (in this example `adapterName`).
+
+```xml
+<?xml version="1.0"?>
+<config>
+    <global>
+    
+        <queue>
+            <backend>adapterName</backend>
+        </queue>
+        
+    </global>
+
+</config>
+
+```
+
+### 4. Done
+Have a nice cup of tea and a sit down.
+
 
 ## Gotchas
 There's a few things I've tripped over when using this module in testing and in implementation:
