@@ -108,3 +108,14 @@ The workers are run using a shell script located within `/shell/`, and you can r
 ```bash
 $ php /path/to/magento/shell/queue.php --watch <queues> 
 ```
+
+## Gotchas
+There's a few things I've tripped over when using this module in testing and in implementation:
+ * **Queues aren't reliable**
+  * This is that you can't count on a queue having been used before - as a task can be run at any point after the queue has been kicked off. So you can't rely on any task having been run before. The workaround for this is that if you're using the queue handler to cache a Magento model for reuse - your queue handler should be the one to instantiate the model within a getter method.
+  * Don't set data to a queue externally from within a task if it's **required** by another task. Have the queue able to create the data itself.
+  * If you do need to set data to a queue from within a task - make sure that any subsequent tasks that need to use this data have appropriate error checks to deal with the event that the data isn't there.
+ * **Store Contexts**
+  * Remember that a task is natively run within the `admin` store - so using `Mage::app()->getStore()` will return the admin store view.
+  * If you need to run a task within a specific store view (such as getting config values via `Mage::getStoreConfig()`, loading collections in the correct store context, and so forth) use the `$task->getStore()` method to get the store view that the task was created from.
+
