@@ -11,6 +11,15 @@ Each queue has it's own handler, so multiple tasks that are a part of the same q
 ## Supported Queue Backends
  * beanstalkd - http://kr.github.io/beanstalkd/
   * Using Pheanstalk - https://github.com/pda/pheanstalk/
+  
+## Installation
+I build this with (modgit) [https://github.com/jreinke/modgit] in mind - and so if you have modgit installedL
+
+```bash
+$ modgit add lilqueue https://github.com/lilmuckers/magento-lilmuckers_queue.git
+``` 
+
+Or you can just merge the files manually into your magento project. This will be added as a Community pear module once it's been fully tested and deemed stable.
 
 ## Usage
 
