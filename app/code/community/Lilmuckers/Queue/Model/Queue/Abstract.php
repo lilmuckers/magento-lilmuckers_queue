@@ -86,15 +86,12 @@ abstract class Lilmuckers_Queue_Model_Queue_Abstract extends Varien_Object
      * Add a task to the queue
      * 
      * @param Lilmuckers_Queue_Model_Queue_Task $data
-     * @param int $priority
-     * @param int $delay
-     * @param int $ttr
      * @return Lilmuckers_Queue_Model_Queue_Abstract
      */
-    public function addTask(Lilmuckers_Queue_Model_Queue_Task $task, $priority = null, $delay = null, $ttr = null)
+    public function addTask(Lilmuckers_Queue_Model_Queue_Task $task)
     {
         //send the task data to the 
-        $this->_getAdapter()->addTask($this->_queue, $task, $priority, $delay, $ttr);
+        $this->_getAdapter()->addTask($this->_queue);
         
         return $this;
     }
