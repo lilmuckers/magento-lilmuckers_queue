@@ -15,7 +15,7 @@ require_once 'abstract.php';
  *
  * @category    Lilmuckers
  * @package     Lilmuckers_Shell
- * @author      Magento Core Team <core@magentocommerce.com>
+ * @author      Patrick McKinley <contact@patrick-mckinley.com>
  */
 class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
 {
