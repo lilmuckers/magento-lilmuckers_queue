@@ -89,6 +89,20 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     protected $_delay;
     
     /**
+     * The task information container
+     * 
+     * @var Varien_Object
+     */
+    protected $_info;
+    
+    /**
+     * Flag this task as a worker
+     * 
+     * @var bool
+     */
+    protected $_isWorker = false;
+    
+    /**
      * Set the priority of the task
      * 
      * @param int $priority
@@ -219,16 +233,48 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     }
     
     /**
-     * Get the queue context for this task - defaults to the default queue
+     * Flag this task as a worker instance
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    public function setIsWorker()
+    {
+        $this->_isWorker = true;
+        return $this;
+    }
+    
+    /**
+     * Get the queue context for this task
+     * 
+     * Return the cached queue object, if there is no queue object it qill
+     * query the adapter to see if it knows what queue this task is a part
+     * of, otherwise it defaults to the default queue
      * 
      * @return Lilmuckers_Queue_Model_Queue_Abstract
      */
     public function getQueue()
     {
         if(!$this->_queue){
-            $this->_queue = Mage::helper('lilqueue')->getQueue(Lilmuckers_Queue_Model_Queue::DEFAULT_QUEUE_CODE);
+            $_queueCode = $this->getInfo()->getQueue();
+            if (!$_queueCode) {
+                $_queueCode = Lilmuckers_Queue_Model_Queue::DEFAULT_QUEUE_CODE;
+            }
+            $this->_queue = Mage::helper('lilqueue')->getQueue($_queueCode, $this->_isWorker);
         }
         return $this->_queue;
+    }
+    
+    /**
+     * Get the task meta information
+     * 
+     * @return Varien_Object
+     */
+    public function getInfo()
+    {
+        if (!$this->_info) {
+            $this->_info = Mage::helper('lilqueue')->getAdapter()->getInformation($this);
+        }
+        return $this->_info;
     }
     
     /**

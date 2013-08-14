@@ -59,7 +59,7 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
         }
         
         //if nothing called, just do the help
-        $this->usageHelp();
+        echo $this->usageHelp();
         
         return $this;
     }
@@ -132,13 +132,19 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
     {
         //start the infinite while loop
         while(true){
-            //iterate through the requested queues to process
-            foreach($queues as $_queue) {
-                //get the queue
-                $_queue = $this->_helper->getQueue($_queue, true);
+            try{
+            
+                //watch the queue list
+                $_task = $this->_helper->getAdapter()->getTask($queues);
                 
-                //run the next task
-                $_queue->runNextTask();
+                //flag the task as a worker so it instantiates the queue properly
+                $_task->setIsWorker();
+                
+                //run the task via the queue
+                $_task->getQueue()->runTask($_task);
+            
+            } catch(Lilmuckers_Queue_Model_Adapter_Timeout_Exception $e){
+                //timeout waiting for job, ignore.
             }
         }
     }

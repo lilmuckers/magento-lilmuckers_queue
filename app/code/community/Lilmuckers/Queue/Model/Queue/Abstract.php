@@ -131,30 +131,41 @@ abstract class Lilmuckers_Queue_Model_Queue_Abstract extends Varien_Object
         try{
             //reserve the task for me
             $_task = $this->reserveNextTask();
+            return $this->runTask($_task);
             
-            //run the task and get the result status
-            switch($_task->run())
-            {
-                case Lilmuckers_Queue_Model_Queue_Task::TASK_CONFIG_ERROR:
-                case Lilmuckers_Queue_Model_Queue_Task::TASK_ERROR:
-                case Lilmuckers_Queue_Model_Queue_Task::TASK_HOLD:
-                    //if it's a configuration error - bury it
-                    $this->hold($_task);
-                    break;
-                
-                case Lilmuckers_Queue_Model_Queue_Task::TASK_RETRY:
-                    //this has been flagged for a retry
-                    $this->retry($_task);
-                    break;
-                
-                case Lilmuckers_Queue_Model_Queue_Task::TASK_SUCCESS:
-                default:
-                    //for success and default behavour - remove from queue
-                    $this->remove($_task);
-                    break;
-            }
         } catch(Lilmuckers_Queue_Model_Adapter_Timeout_Exception $e){
             //timeout waiting for job, ignore.
+        }
+    }
+    
+    /**
+     * Run the specific task
+     * 
+     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @return Lilmuckers_Queue_Model_Queue_Abstract
+     */
+    public function runTask(Lilmuckers_Queue_Model_Queue_Task $task)
+    {
+        //run the task and get the result status
+        switch($task->run())
+        {
+            case Lilmuckers_Queue_Model_Queue_Task::TASK_CONFIG_ERROR:
+            case Lilmuckers_Queue_Model_Queue_Task::TASK_ERROR:
+            case Lilmuckers_Queue_Model_Queue_Task::TASK_HOLD:
+                //if it's a configuration error - bury it
+                $this->hold($task);
+                break;
+            
+            case Lilmuckers_Queue_Model_Queue_Task::TASK_RETRY:
+                //this has been flagged for a retry
+                $this->retry($task);
+                break;
+            
+            case Lilmuckers_Queue_Model_Queue_Task::TASK_SUCCESS:
+            default:
+                //for success and default behavour - remove from queue
+                $this->remove($task);
+                break;
         }
         
         return $this;
