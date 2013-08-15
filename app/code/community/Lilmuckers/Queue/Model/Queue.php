@@ -11,9 +11,9 @@
 /**
  * Default queue model handler
  *
- * @category   Lilmuckers
- * @package    Lilmuckers_Queue
- * @author     Patrick McKinley <contact@patrick-mckinley.com>
+ * @category Lilmuckers
+ * @package  Lilmuckers_Queue
+ * @author   Patrick McKinley <contact@patrick-mckinley.com>
  */
 class Lilmuckers_Queue_Model_Queue extends Lilmuckers_Queue_Model_Queue_Abstract
 {
@@ -25,7 +25,8 @@ class Lilmuckers_Queue_Model_Queue extends Lilmuckers_Queue_Model_Queue_Abstract
     /**
      * Initialise the queue with the queue name 
      * 
-     * @param string $queue
+     * @param string $queue The queue identifier
+     * 
      * @return void
      */
     public function __construct($queue = self::DEFAULT_QUEUE_CODE)

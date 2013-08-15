@@ -11,9 +11,9 @@
 /**
  * Queue task handler
  *
- * @category   Lilmuckers
- * @package    Lilmuckers_Queue
- * @author     Patrick McKinley <contact@patrick-mckinley.com>
+ * @category Lilmuckers
+ * @package  Lilmuckers_Queue
+ * @author   Patrick McKinley <contact@patrick-mckinley.com>
  */
 class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
 {
@@ -105,7 +105,8 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * Set the priority of the task
      * 
-     * @param int $priority
+     * @param int $priority The priority of the task
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     public function setPriority($priority)
@@ -127,7 +128,8 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * Set the ttr of the task
      * 
-     * @param int $ttr
+     * @param int $ttr The time to run value
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     public function setTtr($ttr)
@@ -149,7 +151,8 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * Set the delay of the task
      * 
-     * @param int $delay
+     * @param int $delay The delay before running task
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     public function setDelay($delay)
@@ -171,7 +174,8 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * Set the status of the task for the queue to read
      * 
-     * @param int $status
+     * @param int $status The internal status of the task
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     public function setStatus($status)
@@ -223,7 +227,8 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * Assign the queue context for this task
      * 
-     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The tasks queue
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     public function setQueue(Lilmuckers_Queue_Model_Queue_Abstract $queue)
@@ -254,7 +259,7 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
      */
     public function getQueue()
     {
-        if(!$this->_queue){
+        if (!$this->_queue) {
             $_queueCode = $this->getInfo()->getQueue();
             if (!$_queueCode) {
                 $_queueCode = Lilmuckers_Queue_Model_Queue::DEFAULT_QUEUE_CODE;
@@ -280,7 +285,8 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * Set the store context
      * 
-     * @param Mage_Core_Model_Store|int|string $store
+     * @param Mage_Core_Model_Store|int|string $store The store to run with
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     public function setStore($store)
@@ -311,7 +317,8 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * Set the task identifier
      * 
-     * @param string $task
+     * @param string $task The task identifier
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     public function setTask($task)
@@ -333,7 +340,8 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * The raw job object from the queue backend
      * 
-     * @param mixed $job
+     * @param mixed $job The raw job object
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     public function setJob($job)
@@ -373,7 +381,8 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * Import the json job data
      * 
-     * @param string $data
+     * @param string $data The JSON string from the queue handler
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     public function importData($data)
@@ -393,6 +402,7 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
      * Run the worker for this task
      * 
      * @TODO Exception handling to log errors
+     * 
      * @return bool
      */
     public function run()
@@ -402,7 +412,7 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
             $_callback = $this->_getWorkerCallback();
             
             //split the array because of reasons
-            $_className = $_callback['class'];
+            $_className  = $_callback['class'];
             $_methodName = $_callback['method'];
             
             //get a singleton instance of the class
@@ -435,7 +445,8 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * Load the worker callback from the queue and task identifier
      * 
-     * @throws Lilmuckers_Queue_Model_Queue_Task_Exception
+     * @throws Lilmuckers_Queue_Model_Queue_Task_Exception When no worker is found
+     * 
      * @return array
      */
     public function _getWorkerCallback()
@@ -447,8 +458,12 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
         $_worker = Mage::getConfig()->getNode($_workerPath);
         
         //if there's no worker config element, throw an error
-        if(!$_worker){
-            $_message = sprintf('Invalid queue or worker: %s - %s', $this->getQueue()->getName(), $this->getTask());
+        if (!$_worker) {
+            $_message = sprintf(
+                'Invalid queue or worker: %s - %s',
+                $this->getQueue()->getName(), 
+                $this->getTask()
+            );
             throw new Lilmuckers_Queue_Model_Queue_Task_Exception($_message);
         }
         

@@ -11,17 +11,18 @@
 /**
  * The queue adaptor abstract
  *
- * @category   Lilmuckers
- * @package    Lilmuckers_Queue
- * @author     Patrick McKinley <contact@patrick-mckinley.com>
+ * @category Lilmuckers
+ * @package  Lilmuckers_Queue
+ * @author   Patrick McKinley <contact@patrick-mckinley.com>
  */
 abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
 {
     /**
      * Add a task to the queue
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param string                            $queue The queue identifier
+     * @param Lilmuckers_Queue_Model_Queue_Task $task  The task to queue
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Abstract
      */
     public function addTask($queue, Lilmuckers_Queue_Model_Queue_Task $task)
@@ -45,16 +46,21 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     /**
      * Add the task to the queue
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param string                            $queue The queue identifier
+     * @param Lilmuckers_Queue_Model_Queue_Task $task  The task to queue
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
-    abstract protected function _addToQueue($queue, Lilmuckers_Queue_Model_Queue_Task $task);
+    abstract protected function _addToQueue(
+        $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    );
     
     /**
      * Get the task object for the queue in question
      * 
-     * @param string $queue
+     * @param string $queue The queue identifier
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     abstract protected function _reserveFromQueue($queue);
@@ -62,7 +68,8 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     /**
      * Get the next task from the provided queue or array of queues
      * 
-     * @param mixed $queue
+     * @param mixed $queue The queue identifier
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     public function getTask($queue)
@@ -78,7 +85,8 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     /**
      * Get the next task object for the queues in question
      * 
-     * @param array $queue
+     * @param array $queues The queue identifiers
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     abstract protected function _reserveFromQueues($queues);
@@ -86,7 +94,8 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     /**
      * Touch the task to keep it reserved
      * 
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Task $task The task to renew
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
     public function touch(Lilmuckers_Queue_Model_Queue_Task $task)
@@ -98,7 +107,8 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     /**
      * Touch the task to keep it reserved
      * 
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Task $task The task to renew
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
     abstract protected function _touch(Lilmuckers_Queue_Model_Queue_Task $task);
@@ -106,11 +116,15 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     /**
      * Remove a task from the queue
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler for the queue
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task handler to remove
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
-    public function remove(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    public function remove(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    )
     {
         $this->_remove($queue, $task);
         return $this;
@@ -119,20 +133,28 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     /**
      * Remove a task from the queue abstract method
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task handler to remove
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
-    abstract protected function _remove(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task);
+    abstract protected function _remove(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    );
     
     /**
      * Hold a task in the queue
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to hold
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
-    public function hold(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    public function hold(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    ) 
     {
         $this->_hold($queue, $task);
         return $this;
@@ -141,20 +163,28 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     /**
      * Hold a task in the queue abstract method
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to hold
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
-    abstract protected function _hold(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task);
+    abstract protected function _hold(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    );
     
     /**
      * Unhold a task in the queue 
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to unhold
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
-    public function unhold(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    public function unhold(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    ) 
     {
         $this->_unhold($queue, $task);
         return $this;
@@ -163,20 +193,28 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     /**
      * Unhold a task in the queue - abstract method
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to unhold
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
-    abstract protected function _unhold(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task);
+    abstract protected function _unhold(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    );
     
     /**
      * Requeue a task 
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to retry
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
-    public function retry(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    public function retry(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    ) 
     {
         $this->_retry($queue, $task);
         return $this;
@@ -185,16 +223,21 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     /**
      * Requeue a task - abstract method
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to work within
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to retry
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
-    abstract protected function _retry(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task);
+    abstract protected function _retry(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    );
     
     /**
      * Get the meta information for a given task
      * 
-     * @param Lilmuckers_Queue_Model_Queue_Task 
+     * @param Lilmuckers_Queue_Model_Queue_Task $task The task to get information about
+     * 
      * @return Varien_Object
      */
     public function getInformation(Lilmuckers_Queue_Model_Queue_Task $task)
@@ -223,7 +266,8 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
      * holds => The number of times the task has been held
      * unholds => The number of times the task has been unheld
      * 
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Task $task The task to map the data from
+     * 
      * @return array
      */
     abstract protected function _getMappedTaskData(Lilmuckers_Queue_Model_Queue_Task $task);

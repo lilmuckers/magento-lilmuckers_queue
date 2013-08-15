@@ -25,10 +25,10 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Job status codes
      */
-    const STATUS_READY     = 'ready';
-    const STATUS_RESERVED  = 'reserved';
-    const STATUS_DELAYED   = 'delayed';
-    const STATUS_BURIED    = 'buried';
+    const STATUS_READY    = 'ready';
+    const STATUS_RESERVED = 'reserved';
+    const STATUS_DELAYED  = 'delayed';
+    const STATUS_BURIED   = 'buried';
     
     /**
      * The Pheanstalk object
@@ -66,9 +66,8 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     public function getConnection()
     {
         //we have a stored connection
-        if(!$this->_pheanstalk)
-        {
-            $_config = $this->_getConfiguration();
+        if (!$this->_pheanstalk) {
+            $_config           = $this->_getConfiguration();
             $this->_pheanstalk = new Pheanstalk_Pheanstalk($_config['host'], $_config['port']);
             $this->_priority   = $_config['priority'];
             $this->_delay      = $_config['delay'];
@@ -119,8 +118,9 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Add the task to the queue
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param string                            $queue The queue to use
+     * @param Lilmuckers_Queue_Model_Queue_Task $task  The task to assign
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
     protected function _addToQueue($queue, Lilmuckers_Queue_Model_Queue_Task $task)
@@ -143,7 +143,8 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Get the next task from the queue in question
      * 
-     * @param string $queue
+     * @param string $queue The queue to reserve from
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     protected function _reserveFromQueue($queue)
@@ -159,7 +160,8 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Get the next task from the queues in question
      * 
-     * @param array $queue
+     * @param array $queues The queues to reserve from
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     protected function _reserveFromQueues($queues)
@@ -168,14 +170,14 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
         $_watchedTubes = $this->getConnection()->listTubesWatched();
         
         //unwatch the tubes
-        foreach($_watchedTubes as $_tube) {
+        foreach ($_watchedTubes as $_tube) {
             if (!in_array($_tube, $queues)) {
                 $this->getConnection()->ignore($_tube);
             }
         }
     
         //add all the queues to the watchlist
-        foreach($queues as $_queue){
+        foreach ($queues as $_queue) {
             $this->getConnection()
                 ->watch($_queue);
         }
@@ -190,15 +192,19 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Prepare the pheanstalk job for the module as a task
      * 
-     * @param Pheanstalk_Job $job
-     * @throws Lilmuckers_Queue_Model_Queue_Task_Exception
+     * @param Pheanstalk_Job $job The Pheanstalk job
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
+     * 
+     * @throws Lilmuckers_Queue_Model_Adapter_Timeout_Exception When the connection times out
      */
     protected function _prepareJob(Pheanstalk_Job $job)
     {
         //if there's a timeout instead of a job then throw the timeout exception
-        if(!$job){
-            throw new Lilmuckers_Queue_Model_Adapter_Timeout_Exception('Timeout watching queue, no job delivered in time limit');
+        if (!$job) {
+            throw new Lilmuckers_Queue_Model_Adapter_Timeout_Exception(
+                'Timeout watching queue, no job delivered in time limit'
+            );
         }
         
         //instantiate the task
@@ -215,7 +221,8 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Touch the task to keep it reserved
      * 
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Task $task The task to renew
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
     protected function _touch(Lilmuckers_Queue_Model_Queue_Task $task)
@@ -233,11 +240,12 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Remove a task from the queue
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to remove
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
-    protected function _remove(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    protected function _remove(Lilmuckers_Queue_Model_Queue_Abstract $queue, Lilmuckers_Queue_Model_Queue_Task $task)
     {
         //get the pheanstalk job
         $_job = $task->getJob();
@@ -252,11 +260,12 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Hold a task in the queue by burying it
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to hold
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
-    protected function _hold(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    protected function _hold(Lilmuckers_Queue_Model_Queue_Abstract $queue, Lilmuckers_Queue_Model_Queue_Task $task)
     {
         //get the pheanstalk job
         $_job = $task->getJob();
@@ -271,11 +280,12 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Unhold a task in the queue by kicking it
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to unhold
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
-    protected function _unhold(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    protected function _unhold(Lilmuckers_Queue_Model_Queue_Abstract $queue, Lilmuckers_Queue_Model_Queue_Task $task)
     {
         //get the pheanstalk job
         $_job = $task->getJob();
@@ -290,11 +300,12 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Requeue a task
      * 
-     * @param string $queue
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
+     * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to retry
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
-    protected function _retry(Lilmuckers_Queue_Model_Queue_Task $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    protected function _retry(Lilmuckers_Queue_Model_Queue_Abstract $queue, Lilmuckers_Queue_Model_Queue_Task $task)
     {
         //get the pheanstalk job
         $_job = $task->getJob();
@@ -309,7 +320,8 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Get the job status for a given job
      * 
-     * @param Lilmuckers_Queue_Model_Queue_Task $task
+     * @param Lilmuckers_Queue_Model_Queue_Task $task The task to map data for
+     * 
      * @return array
      */
     protected function _getMappedTaskData(Lilmuckers_Queue_Model_Queue_Task $task)
@@ -328,7 +340,8 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
      * Map the pheanstalk jobstat response to the task info for
      * the Lilmuckers_Queue module
      * 
-     * @param Pheanstalk_Response_ArrayResponse $stats
+     * @param Pheanstalk_Response_ArrayResponse $stats The stats response to map
+     * 
      * @return array
      */
     protected function _mapJobStatToTaskInfo(Pheanstalk_Response_ArrayResponse $stats)
@@ -354,7 +367,8 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     /**
      * Map the beanstalkd state to the magento state
      * 
-     * @param string $state
+     * @param string $state The state to map
+     * 
      * @return string
      */
     protected function _stateMap($state)

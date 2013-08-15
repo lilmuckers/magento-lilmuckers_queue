@@ -11,9 +11,9 @@
 /**
  * The queue default helper
  *
- * @category   Lilmuckers
- * @package    Lilmuckers_Queue
- * @author     Patrick McKinley <contact@patrick-mckinley.com>
+ * @category Lilmuckers
+ * @package  Lilmuckers_Queue
+ * @author   Patrick McKinley <contact@patrick-mckinley.com>
  */
 class Lilmuckers_Queue_Helper_Data extends Mage_Core_Helper_Abstract
 {
@@ -70,7 +70,8 @@ class Lilmuckers_Queue_Helper_Data extends Mage_Core_Helper_Abstract
     {
         if (!$this->_adapter) {
             //get the queue backend type
-            $_backend = (string) Mage::getConfig()->getNode(self::QUEUE_BACKEND_CONFIG);
+            $_backend = (string) Mage::getConfig()
+                ->getNode(self::QUEUE_BACKEND_CONFIG);
             
             //get an instance of the backend adapter
             $this->_adapter = $this->_getBackendAdapter($_backend);
@@ -82,13 +83,14 @@ class Lilmuckers_Queue_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Load an instance of the supplied backend adapter
      * 
-     * @param string $backend
+     * @param string $backend The backend code from the config.xml
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
     protected function _getBackendAdapter($backend)
     {
         //get the backend model type
-        $_configPath = sprintf(self::QUEUE_BACKEND_TYPE, $backend);
+        $_configPath       = sprintf(self::QUEUE_BACKEND_TYPE, $backend);
         $_backendModelType = (string) Mage::getConfig()->getNode($_configPath);
         
         //Instantiate the model
@@ -100,8 +102,9 @@ class Lilmuckers_Queue_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Get the queue handler for the given queue
      * 
-     * @param string $queue
-     * @param bool $worker
+     * @param string $queue  The code for the queue handler
+     * @param bool   $worker Flag if this queue is to be used to run workers
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Abstract
      */
     public function getQueue($queue, $worker = false)
@@ -109,11 +112,12 @@ class Lilmuckers_Queue_Helper_Data extends Mage_Core_Helper_Abstract
         //check the cache
         if (!array_key_exists($queue, $this->_queues)) {
             //get the path
-            $_configPath = sprintf(self::QUEUE_HANDLER_TYPE, $queue);
-            $_queueHandlerType = (string) Mage::getConfig()->getNode($_configPath);
+            $_configPath       = sprintf(self::QUEUE_HANDLER_TYPE, $queue);
+            $_queueHandlerType = (string) Mage::getConfig()
+                ->getNode($_configPath);
             
             //default it if not set
-            if(!$_queueHandlerType){
+            if (!$_queueHandlerType) {
                 $_queueHandlerType = self::QUEUE_HANDLER_TYPE_DEFAULT;
             }
             
@@ -121,7 +125,7 @@ class Lilmuckers_Queue_Helper_Data extends Mage_Core_Helper_Abstract
             $this->_queues[$queue] = Mage::getSingleton($_queueHandlerType, $queue);
             
             //check the context
-            if($worker){
+            if ($worker) {
                 $this->_queues[$queue]->setIsWorker();
             }
         }
@@ -133,9 +137,10 @@ class Lilmuckers_Queue_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Helper for creating a task
      * 
-     * @param string $task
-     * @param array $data
-     * @param mixed $store
+     * @param string $task  The code for the task to run
+     * @param array  $data  The data array to pass to the task
+     * @param mixed  $store The store context to run the task with
+     * 
      * @return Lilmuckers_Queue_Model_Queue_Task
      */
     public function createTask($task, $data = array(), $store = null)
