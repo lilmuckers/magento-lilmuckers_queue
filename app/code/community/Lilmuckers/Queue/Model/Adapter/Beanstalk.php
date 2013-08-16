@@ -11,9 +11,11 @@
 /**
  * The beanstalkd queue adaptor
  *
- * @category   Lilmuckers
- * @package    Lilmuckers_Queue
- * @author     Patrick McKinley <contact@patrick-mckinley.com>
+ * @category Lilmuckers
+ * @package  Lilmuckers_Queue
+ * @author   Patrick McKinley <contact@patrick-mckinley.com>
+ * @license  MIT http://choosealicense.com/licenses/mit/
+ * @link     https://github.com/lilmuckers/magento-lilmuckers_queue
  */
 class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Adapter_Abstract
 {
@@ -245,7 +247,10 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
      * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
-    protected function _remove(Lilmuckers_Queue_Model_Queue_Abstract $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    protected function _remove(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    )
     {
         //get the pheanstalk job
         $_job = $task->getJob();
@@ -265,7 +270,10 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
      * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
-    protected function _hold(Lilmuckers_Queue_Model_Queue_Abstract $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    protected function _hold(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    )
     {
         //get the pheanstalk job
         $_job = $task->getJob();
@@ -285,7 +293,10 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
      * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
-    protected function _unhold(Lilmuckers_Queue_Model_Queue_Abstract $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    protected function _unhold(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    )
     {
         //get the pheanstalk job
         $_job = $task->getJob();
@@ -305,7 +316,10 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
      * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
-    protected function _retry(Lilmuckers_Queue_Model_Queue_Abstract $queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    protected function _retry(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    )
     {
         //get the pheanstalk job
         $_job = $task->getJob();

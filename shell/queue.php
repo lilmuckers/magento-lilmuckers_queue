@@ -13,9 +13,11 @@ require_once 'abstract.php';
 /**
  * Queue processor script
  *
- * @category    Lilmuckers
- * @package     Lilmuckers_Shell
- * @author      Patrick McKinley <contact@patrick-mckinley.com>
+ * @category Lilmuckers
+ * @package  Lilmuckers_Shell
+ * @author   Patrick McKinley <contact@patrick-mckinley.com>
+ * @license  MIT http://choosealicense.com/licenses/mit/
+ * @link     https://github.com/lilmuckers/magento-lilmuckers_queue
  */
 class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
 {
@@ -42,13 +44,13 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
         $this->_helper = $this->_factory->getHelper('lilqueue');
         
         //checkif the user wanted a list
-        if($this->getArg('list')) {
+        if ($this->getArg('list')) {
             //the user wants to list all the queues
             return $this->_list();
         }
         
         //check if the user wanted to watch a queue
-        if($this->getArg('watch')) {
+        if ($this->getArg('watch')) {
             //get the selected queues
             $_queues = $this->getArg('watch');
             
@@ -67,7 +69,8 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
     /**
      * Get a list of the specified queues
      * 
-     * @param string $queues
+     * @param string $queues String to define the queues to run
+     * 
      * @return array
      */
     protected function _getQueues($queues = self::KEYWORD_ALL)
@@ -79,12 +82,12 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
         $_queues = array();
         
         //arrange the queue data
-        foreach($_queuesInfo as $_name => $_data){
+        foreach ($_queuesInfo as $_name => $_data) {
             $_queues[$_name] = $_data['label'];
         }
         
         //select what to return
-        if($queues == self::KEYWORD_ALL){
+        if ($queues == self::KEYWORD_ALL) {
             // the guy wants them all
             return $_queues;
         }
@@ -94,8 +97,8 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
         
         //we want to return only the ones we want
         $_selected = array();
-        foreach($_selectedQueues as $_chosen){
-            if(array_key_exists($_chosen, $_queues)){
+        foreach ($_selectedQueues as $_chosen) {
+            if (array_key_exists($_chosen, $_queues)) {
                 $_selected[$_chosen] = $_queues[$_chosen];
             }
         }
@@ -113,7 +116,7 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
         $_queues = $this->_getQueues();
         
         //display all queue codes
-        foreach($_queues as $_code=>$_label){
+        foreach ($_queues as $_code=>$_label) {
             echo sprintf('%-30s', $_code);
             echo $_label . "\n";
         }
@@ -125,14 +128,15 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
     /**
      * Watch script that will loop ad-infinitum
      * 
-     * @param array $queues
+     * @param array $queues Array of queues to watch
+     * 
      * @return void
      */
     protected function _watch($queues)
     {
         //start the infinite while loop
-        while(true){
-            try{
+        while (true) {
+            try {
             
                 //watch the queue list
                 $_task = $this->_helper->getAdapter()->getTask($queues);
@@ -143,7 +147,7 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
                 //run the task via the queue
                 $_task->getQueue()->runTask($_task);
             
-            } catch(Lilmuckers_Queue_Model_Adapter_Timeout_Exception $e){
+            } catch(Lilmuckers_Queue_Model_Adapter_Timeout_Exception $e) {
                 //timeout waiting for job, ignore.
             }
         }
@@ -159,9 +163,9 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
         return <<<USAGE
 Usage:  php -f queue.php -- [options]
 
-  --list                        Get a list of all valid queues
-  --watch <queue>               Start processing a given queue set, or comma seperated list of queues
-  help                          This help
+  --list                   Get a list of all valid queues
+  --watch <queue>          Start processing a given queue set, or comma seperated list of queues
+  help                     This help
 
   <queue>     Comma separated queue codes or value "all" for all queues
 

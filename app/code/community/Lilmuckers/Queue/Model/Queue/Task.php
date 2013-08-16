@@ -14,6 +14,8 @@
  * @category Lilmuckers
  * @package  Lilmuckers_Queue
  * @author   Patrick McKinley <contact@patrick-mckinley.com>
+ * @license  MIT http://choosealicense.com/licenses/mit/
+ * @link     https://github.com/lilmuckers/magento-lilmuckers_queue
  */
 class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
 {
@@ -452,7 +454,11 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     public function _getWorkerCallback()
     {
         //build the path to the config element for the worker
-        $_workerPath = sprintf(self::WORKER_CALLBACK_PATH, $this->getQueue()->getName(), $this->getTask());
+        $_workerPath = sprintf(
+            self::WORKER_CALLBACK_PATH, 
+            $this->getQueue()->getName(), 
+            $this->getTask()
+        );
         
         //get the worker config element
         $_worker = Mage::getConfig()->getNode($_workerPath);

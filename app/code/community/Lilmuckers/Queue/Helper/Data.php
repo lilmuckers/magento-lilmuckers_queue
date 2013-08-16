@@ -14,6 +14,8 @@
  * @category Lilmuckers
  * @package  Lilmuckers_Queue
  * @author   Patrick McKinley <contact@patrick-mckinley.com>
+ * @license  MIT http://choosealicense.com/licenses/mit/
+ * @link     https://github.com/lilmuckers/magento-lilmuckers_queue
  */
 class Lilmuckers_Queue_Helper_Data extends Mage_Core_Helper_Abstract
 {

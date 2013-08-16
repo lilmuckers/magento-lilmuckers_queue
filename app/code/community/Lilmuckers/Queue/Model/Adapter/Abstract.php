@@ -14,6 +14,8 @@
  * @category Lilmuckers
  * @package  Lilmuckers_Queue
  * @author   Patrick McKinley <contact@patrick-mckinley.com>
+ * @license  MIT http://choosealicense.com/licenses/mit/
+ * @link     https://github.com/lilmuckers/magento-lilmuckers_queue
  */
 abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
 {
@@ -154,7 +156,7 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     public function hold(
         Lilmuckers_Queue_Model_Queue_Abstract $queue, 
         Lilmuckers_Queue_Model_Queue_Task $task
-    ) 
+    )
     {
         $this->_hold($queue, $task);
         return $this;
