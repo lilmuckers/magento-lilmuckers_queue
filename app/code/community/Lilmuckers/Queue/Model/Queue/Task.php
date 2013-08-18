@@ -274,11 +274,13 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * Get the task meta information
      * 
+     * @param bool $refresh Flag to force a refresh of the data
+     * 
      * @return Varien_Object
      */
-    public function getInfo()
+    public function getInfo($refresh = false)
     {
-        if (!$this->_info) {
+        if (!$this->_info || $refresh) {
             $this->_info = Mage::helper('lilqueue')->getAdapter()->getInformation($this);
         }
         return $this->_info;
@@ -451,7 +453,7 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
      * 
      * @return array
      */
-    public function _getWorkerCallback()
+    protected function _getWorkerCallback()
     {
         //build the path to the config element for the worker
         $_workerPath = sprintf(

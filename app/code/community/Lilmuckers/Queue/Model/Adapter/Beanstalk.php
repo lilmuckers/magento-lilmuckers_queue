@@ -303,8 +303,33 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
         
         //delete the task from the queue
         $this->getConnection()
-            ->kick($_job);
+            ->kickJob($_job);
         
+        return $this;
+    }
+    
+    /**
+     * Unhold a number of jobs directly with the backend
+     * 
+     * @param int                                   $number The number of held tasks to kick
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue  The queue to kick from
+     * 
+     * @return Lilmuckers_Queue_Model_Adapter_Abstract
+     */
+    public function _unholdMultiple(
+        $number,
+        Lilmuckers_Queue_Model_Queue_Abstract $queue = null
+    )
+    {
+        //use the right tube if it's set
+        if (!is_null($queue)) {
+            $this->getConnection()
+                ->useTube($queue->getName());
+        }
+        
+        //the number of jobs to kick
+        $this->getConnection()
+            ->kick($number);
         return $this;
     }
     
@@ -343,9 +368,14 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
         //get the pheanstalk job
         $_job = $task->getJob();
         
-        //get the data on the job
-        $_status = $this->getConnection()
-            ->statsJob($_job);
+        try{
+            //get the data on the job
+            $_status = $this->getConnection()
+                ->statsJob($_job);
+        } catch(Pheanstalk_Exception_ServerException $e) {
+            //no job found, so return an empty dataset
+            return array();
+        }
         
         return $this->_mapJobStatToTaskInfo($_status);
     }
@@ -389,5 +419,60 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
     {
         $_statusMap = $this->getStatusMap();
         return $_statusMap[$state];
+    }
+    
+    /**
+     * Get the next job in teh queue without reserving it
+     * 
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue Queue to peek at
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    protected function _getUnreservedTask(Lilmuckers_Queue_Model_Queue_Abstract $queue)
+    {
+        //peek at the next ready job
+        $_job = $this->getConnection()
+            ->peekReady($queue->getName());
+        
+        //turn it into a task
+        return $this->_prepareJob($_job);
+    }
+    
+    /**
+     * Get the next delayed job in the queue without reserving it
+     * 
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue Queue to peek at
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    protected function _getUnreservedDelayedTask(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue
+    )
+    {
+        //peek at the next ready job
+        $_job = $this->getConnection()
+            ->peekDelayed($queue->getName());
+        
+        //turn it into a task
+        return $this->_prepareJob($_job);
+    }
+    
+    /**
+     * Get the next held job in the queue without reserving it
+     * 
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue Queue to peek at
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    protected function _getUnreservedHeldTask(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue
+    )
+    {
+        //peek at the next ready job
+        $_job = $this->getConnection()
+            ->peekBuried($queue->getName());
+        
+        //turn it into a task
+        return $this->_prepareJob($_job);
     }
 }

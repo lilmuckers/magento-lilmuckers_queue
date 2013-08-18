@@ -22,18 +22,21 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     /**
      * Add a task to the queue
      * 
-     * @param string                            $queue The queue identifier
+     * @param Lilmuckers_Queue_Model_Queue      $queue The queue identifier
      * @param Lilmuckers_Queue_Model_Queue_Task $task  The task to queue
      * 
      * @return Lilmuckers_Queue_Model_Queue_Abstract
      */
-    public function addTask($queue, Lilmuckers_Queue_Model_Queue_Task $task)
+    public function addTask(
+        Lilmuckers_Queue_Model_Queue $queue, 
+        Lilmuckers_Queue_Model_Queue_Task $task
+    )
     {
         //ensure the queue connection is loaded
         $this->_loadConnection();
         
         //queue this stuff up
-        $this->_addToQueue($queue, $task);
+        $this->_addToQueue($queue->getName(), $task);
         
         return $this;
     }
@@ -176,6 +179,35 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     );
     
     /**
+     * Unhold a number of jobs
+     * 
+     * @param int                                   $number The number of held tasks to kick
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue  The queue handler to use
+     * 
+     * @return Lilmuckers_Queue_Model_Adapter_Abstract
+     */
+    public function unholdMultiple(
+        $number, 
+        Lilmuckers_Queue_Model_Queue_Abstract $queue = null
+    )
+    {
+        return $this->_unholdMultiple($number, $queue);
+    }
+    
+    /**
+     * Unhold a number of jobs directly with the backend
+     * 
+     * @param int                                   $number The number of held tasks to kick
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue  The queue handler to use
+     * 
+     * @return Lilmuckers_Queue_Model_Adapter_Abstract
+     */
+    abstract public function _unholdMultiple(
+        $number, 
+        Lilmuckers_Queue_Model_Queue_Abstract $queue = null
+    );
+    
+    /**
      * Unhold a task in the queue 
      * 
      * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
@@ -273,4 +305,73 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
      * @return array
      */
     abstract protected function _getMappedTaskData(Lilmuckers_Queue_Model_Queue_Task $task);
+    
+    /**
+     * Get the next job in the queue without reserving it
+     * 
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue Queue to peek at
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    public function getUnreservedTask(Lilmuckers_Queue_Model_Queue_Abstract $queue)
+    {
+        return $this->_getUnreservedTask($queue);
+    }
+    
+    /**
+     * Get the next job in teh queue without reserving it
+     * 
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue Queue to peek at
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    abstract protected function _getUnreservedTask(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue
+    );
+    
+    /**
+     * Get the next delayed job in the queue without reserving it
+     * 
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue Queue to peek at
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    public function getUnreservedDelayedTask(Lilmuckers_Queue_Model_Queue_Abstract $queue)
+    {
+        return $this->_getUnreservedDelayedTask($queue);
+    }
+    
+    /**
+     * Get the next delayed job in the queue without reserving it
+     * 
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue Queue to peek at
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    abstract protected function _getUnreservedDelayedTask(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue
+    );
+    
+    /**
+     * Get the next held job in the queue without reserving it
+     * 
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue Queue to peek at
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    public function getUnreservedHeldTask(Lilmuckers_Queue_Model_Queue_Abstract $queue)
+    {
+        return $this->_getUnreservedDelayedTask($queue);
+    }
+    
+    /**
+     * Get the next held job in the queue without reserving it
+     * 
+     * @param Lilmuckers_Queue_Model_Queue_Abstract $queue Queue to peek at
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    abstract protected function _getUnreservedHeldTask(
+        Lilmuckers_Queue_Model_Queue_Abstract $queue
+    );
 }

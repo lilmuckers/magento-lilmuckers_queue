@@ -95,7 +95,7 @@ abstract class Lilmuckers_Queue_Model_Queue_Abstract extends Varien_Object
     public function addTask(Lilmuckers_Queue_Model_Queue_Task $task)
     {
         //send the task data to the 
-        $this->_getAdapter()->addTask($this->_queue, $task);
+        $this->_getAdapter()->addTask($this, $task);
         
         return $this;
     }
@@ -120,6 +120,51 @@ abstract class Lilmuckers_Queue_Model_Queue_Abstract extends Varien_Object
         //retrieve the task data from the queue, 
         //assign it the queue context and return
         $_task = $this->_getAdapter()->getTask($this->_queue);
+        $_task->setQueue($this);
+        
+        return $_task;
+    }
+    
+    /**
+     * Get but don't reserve the next task for the queue
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    public function getNextUnreservedTask()
+    {
+        //retrieve the task data from the queue, 
+        //assign it the queue context and return
+        $_task = $this->_getAdapter()->getUnreservedTask($this);
+        $_task->setQueue($this);
+        
+        return $_task;
+    }
+    
+    /**
+     * Get but don't reserve the next task for the queue
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    public function getNextUnreservedDelayedTask()
+    {
+        //retrieve the task data from the queue, 
+        //assign it the queue context and return
+        $_task = $this->_getAdapter()->getUnreservedDelayedTask($this);
+        $_task->setQueue($this);
+        
+        return $_task;
+    }
+    
+    /**
+     * Get but don't reserve the next task for the queue
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Task
+     */
+    public function getNextUnreservedHeldTask()
+    {
+        //retrieve the task data from the queue, 
+        //assign it the queue context and return
+        $_task = $this->_getAdapter()->getUnreservedHeldTask($this);
         $_task->setQueue($this);
         
         return $_task;
@@ -218,6 +263,20 @@ abstract class Lilmuckers_Queue_Model_Queue_Abstract extends Varien_Object
         $this->_getAdapter()
             ->unhold($this, $task);
         
+        return $this;
+    }
+    
+    /**
+     * Unhold multiple tasks at once in this queue
+     * 
+     * @param int $number The number of tasks to kick
+     * 
+     * @return Lilmuckers_Queue_Model_Queue_Abstract
+     */
+    public function unholdMultiple($number)
+    {
+        $this->_getAdapter()
+            ->unholdMultiple($number, $this);
         return $this;
     }
     

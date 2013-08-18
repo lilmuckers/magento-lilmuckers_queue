@@ -113,7 +113,7 @@ class Lilmuckers_Queue_Helper_Data extends Mage_Core_Helper_Abstract
     {
         //check the cache
         if (!array_key_exists($queue, $this->_queues)) {
-            //get the path
+            //get the model path
             $_configPath       = sprintf(self::QUEUE_HANDLER_TYPE, $queue);
             $_queueHandlerType = (string) Mage::getConfig()
                 ->getNode($_configPath);
@@ -124,7 +124,10 @@ class Lilmuckers_Queue_Helper_Data extends Mage_Core_Helper_Abstract
             }
             
             //instantiate the handler
-            $this->_queues[$queue] = Mage::getSingleton($_queueHandlerType, $queue);
+            $this->_queues[$queue] = Mage::getModel(
+                $_queueHandlerType, 
+                array('queue'=>$queue)
+            );
             
             //check the context
             if ($worker) {

@@ -15,6 +15,21 @@
             <version>0.2.1</version>
         </Lilmuckers_Queue>
     </modules>
+    
+    <phpunit>
+
+        <suite>
+            <modules>
+                <Lilmuckers_Queue />
+            </modules>
+
+            <groups>
+                <helpers>Helper</helpers>
+            </groups>
+        </suite>
+
+    </phpunit>
+    
     <global>
     
         <models>
@@ -60,6 +75,28 @@
                 </test>
             </workers>
         </default>
+        <unit_tests>
+            <label>Unit Test Queue</label>
+            <class>lilqueue/queue</class>
+            <workers>
+                <test>
+                    <class>lilqueue/worker</class>
+                    <method>test</method>
+                </test>
+                <test_error>
+                    <class>lilqueue/worker</class>
+                    <method>testError</method>
+                </test_error>
+                <test_success>
+                    <class>lilqueue/worker</class>
+                    <method>testSuccess</method>
+                </test_success>
+                <test_retry>
+                    <class>lilqueue/worker</class>
+                    <method>testRetry</method>
+                </test_retry>
+            </workers>
+        </unit_tests>
     </queues>
     
 </config>

@@ -31,9 +31,16 @@ class Lilmuckers_Queue_Model_Queue extends Lilmuckers_Queue_Model_Queue_Abstract
      * 
      * @return void
      */
-    public function __construct($queue = self::DEFAULT_QUEUE_CODE)
+    public function __construct($queue = null)
     {
+        //set the queue appropriately
+        if (is_null($queue) || !array_key_exists('queue', $queue)) {
+            $_queue = self::DEFAULT_QUEUE_CODE;
+        } else {
+            $_queue = $queue['queue'];
+        }
+        
         //and run the inheritor
-        parent::__construct($queue);
+        parent::__construct($_queue);
     }
 }
