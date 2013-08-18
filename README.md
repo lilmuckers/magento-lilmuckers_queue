@@ -103,6 +103,7 @@ $_queue->addTask($_task);
 ```
   
 ### Workers
+
 Workers are even easier, as they're just a method that receive the task as an argument. They must set a status to the task once they're done. 
 If a task is taking longer than the allowed time by the queue backend, it can extend that time by calling `touch()` on the task.
 ```php
@@ -135,6 +136,8 @@ class My_Module_Model_Worker extends Lilmuckers_Queue_Model_Worker_Abstract
     }
 }
 ```
+
+
 
 ### Running the workers
 The workers are run using a shell script located within `/shell/`, and you can run all queues, or a subset of queues, allowing you to split the different queues to different servers, or whatever arrangement you so wish, to allow maximum flexibility. The script can also be run multiple times to allow for multiple workers
@@ -189,6 +192,8 @@ Within the `local.xml` you'll now need to set the **backend value** to the code 
 ### 4. Done
 Have a nice cup of tea and a sit down.
 
+## Testing
+The unit tests are built with [EcomDev_PHPUnit](https://github.com/EcomDev/EcomDev_PHPUnit) and should run with the standard test-suite.
 
 ## Gotchas
 There's a few things I've tripped over when using this module in testing and in implementation:
