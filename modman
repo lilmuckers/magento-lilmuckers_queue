@@ -4,5 +4,6 @@ app/etc/modules/Lilmuckers_Queue.xml    app/etc/modules/Lilmuckers_Queue.xml
 app/etc/local.xml.queuesample           app/etc/local.xml.queuesample
 lib/Pheanstalk                          lib/Pheanstalk
 shell/queue.php                         shell/queue.php
-LICENSE.txt                             app/code/community/Lilmuckers/Queue_LICENSE.txt
+LICENSE                                 app/code/community/Lilmuckers/Queue_LICENSE
 README.md                               app/code/community/Lilmuckers/Queue_README.md
+CHANGELOG.md                            app/code/community/Lilmuckers/Queue_CHANGELOG.md
