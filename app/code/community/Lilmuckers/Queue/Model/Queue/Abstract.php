@@ -20,23 +20,35 @@
 abstract class Lilmuckers_Queue_Model_Queue_Abstract extends Varien_Object
 {
     /**
+     * The queue identifier for this queue
+     */
+    const DEFAULT_QUEUE_CODE = 'default';
+
+    /**
      * The assigned queue to work with
      * 
      * @var string
      */
     protected $_queue;
-    
+
     /**
      * Initialise the queue with the queue name 
      * 
-     * @param string $queue The identifier for the queue
+     * @param mixed $queue The queue identifier
      * 
      * @return void
      */
-    public function __construct($queue)
+    public function __construct($queue = null)
     {
+        //set the queue appropriately
+        if (is_null($queue) || !array_key_exists('queue', $queue)) {
+            $_queue = self::DEFAULT_QUEUE_CODE;
+        } else {
+            $_queue = $queue['queue'];
+        }
+        
         //assign the queue name
-        $this->_queue = $queue;
+        $this->_queue = $_queue;
         
         //and run the inheritor
         parent::__construct();

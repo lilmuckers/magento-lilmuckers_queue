@@ -28,7 +28,7 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
      * @return Lilmuckers_Queue_Model_Queue_Abstract
      */
     public function addTask(
-        Lilmuckers_Queue_Model_Queue $queue, 
+        Lilmuckers_Queue_Model_Queue_Abstract $queue, 
         Lilmuckers_Queue_Model_Queue_Task $task
     )
     {

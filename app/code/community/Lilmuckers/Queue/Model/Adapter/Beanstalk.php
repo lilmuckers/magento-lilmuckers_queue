@@ -171,17 +171,17 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
         //remove all queues from the watchlist
         $_watchedTubes = $this->getConnection()->listTubesWatched();
         
+        //add all the queues to the watchlist
+        foreach ($queues as $_queue) {
+            $this->getConnection()
+                ->watch($_queue);
+        }
+            
         //unwatch the tubes
         foreach ($_watchedTubes as $_tube) {
             if (!in_array($_tube, $queues)) {
                 $this->getConnection()->ignore($_tube);
             }
-        }
-    
-        //add all the queues to the watchlist
-        foreach ($queues as $_queue) {
-            $this->getConnection()
-                ->watch($_queue);
         }
         
         //get the next job in the qatched queues
