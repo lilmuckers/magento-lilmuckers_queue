@@ -1,5 +1,8 @@
 ## Changelog
 
+### 0.2.3
+ * Added support for Amazon SQS
+
 ### 0.2.2
  * Fixed an issue with custom queue handler instantiation
  * Fixed an issue with the queue watching with **beanstalkd**

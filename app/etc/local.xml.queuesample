@@ -13,7 +13,9 @@
     <global>
         
         <queue>
-            <backend>beanstalkd</backend>
+            <backend>beanstalkd</backend><!-- beanstalkd / amazonsqs -->
+            
+            <!-- beanstalkd specific config -->
             <beanstalkd>
                 <servers>
                     <server>
@@ -21,6 +23,15 @@
                     </server>
                 </servers>
             </beanstalkd>
+            
+            <!-- Amazon SQS specific config -->
+            <amazonsqs>
+                <connection>
+                    <key></key>
+                    <secret></secret>
+                    <region></region>
+                </connection>
+            </amazonsqs>
         </queue>
         
     </global>

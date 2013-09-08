@@ -60,10 +60,46 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
              return $this->_watch(array_keys($_queues));
         }
         
+        //check if we're sending something ot the queue
+        if ($this->getArg('send')) {
+            //get the send param and validate it
+            $_send = $this->getArg('send');
+            if (false !== strpos($_send, ':')) {
+                list($_queue, $_task, $_message) = explode(':', $_send);
+                return $this->_send($_queue, $_task, $_message);
+            }
+            
+            die("An invalid send message was specified\n");
+        }
+        
         //if nothing called, just do the help
         echo $this->usageHelp();
         
         return $this;
+    }
+    
+    /**
+     * Send an arbitrary message to the active queue
+     * 
+     * @param string $queue   Name of a queue to send to
+     * @param string $task    Name of the task to run
+     * @param string $message Message to send to the queue
+     * 
+     * @return void
+     */
+    protected function _send($queue, $task, $message)
+    {
+        //get the queue handler
+        $_queue = Mage::helper('lilqueue')->getQueue($queue);
+            
+        //instantiate the task
+        $_task = Mage::helper('lilqueue')->createTask(
+            $task, 
+            array('message' => $message)
+        );
+            
+        //send to the queue
+        $_queue->addTask($_task);
     }
     
     /**
@@ -146,7 +182,7 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
                 
                 //run the task via the queue
                 $_task->getQueue()->runTask($_task);
-            
+                
             } catch(Lilmuckers_Queue_Model_Adapter_Timeout_Exception $e) {
                 //timeout waiting for job, ignore.
             }
@@ -163,9 +199,10 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
         return <<<USAGE
 Usage:  php -f queue.php -- [options]
 
-  --list                   Get a list of all valid queues
-  --watch <queue>          Start processing a given queue set, or comma seperated list of queues
-  help                     This help
+  --list                          Get a list of all valid queues
+  --watch <queue>                 Start processing a given queue set
+  --send <queue>:<task>:<message> Send a message to the queue for testing
+  help                            This help
 
   <queue>     Comma separated queue codes or value "all" for all queues
 

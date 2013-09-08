@@ -12,7 +12,7 @@
 <config>
     <modules>
         <Lilmuckers_Queue>
-            <version>0.2.2</version>
+            <version>0.2.3</version>
         </Lilmuckers_Queue>
     </modules>
     
@@ -45,6 +45,9 @@
                 <beanstalkd>
                     <class>lilqueue/adapter_beanstalk</class>
                 </beanstalkd>
+                <amazonsqs>
+                    <class>lilqueue/adapter_amazon</class>
+                </amazonsqs>
             </adapters>
             <beanstalkd>
                 <servers>
@@ -56,6 +59,13 @@
                     </server>
                 </servers>
             </beanstalkd>
+            <amazonsqs>
+                <connection>
+                    <delay>0</delay>
+                    <ttr>60</ttr>
+                    <wait>5</wait>
+                </connection>
+            </amazonsqs>
         </queue>
         
     </global>

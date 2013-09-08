@@ -11,6 +11,8 @@ Each queue has it's own handler, so multiple tasks that are a part of the same q
 ## Supported Queue Backends
  * beanstalkd - http://kr.github.io/beanstalkd/
   * Using Pheanstalk - https://github.com/pda/pheanstalk/
+ * Amazon SQS - http://aws.amazon.com/sqs/
+  * Using Amazon AWS SDK
   
 ## Installation
 I built this with **modgit** (https://github.com/jreinke/modgit) in mind - and so if you have modgit installed:
@@ -40,6 +42,30 @@ The configuration is similar to the `cache` configuration, and is held within th
                     </server>
                 </servers>
             </beanstalkd>
+        </queue>
+        
+    </global>
+
+</config>
+
+```
+
+For a simple **Amazon SQS** configuration you'd merge this into your `local.xml`:
+
+```xml
+<?xml version="1.0"?>
+<config>
+    <global>
+    
+        <queue>
+            <backend>amazonsqs</backend>
+            <amazonsqs>
+                <connection>
+                    <key>{{AWS KEY}}</key>
+                    <secret>{{AWS SECRET}}</secret>
+                    <region>{{AWS REGION}}</region>
+                </connection>
+            </amazonsqs>
         </queue>
         
     </global>
@@ -207,3 +233,4 @@ There's a few things I've tripped over when using this module in testing and in 
  * **Memory**
   * Ensure that workers clean up after themselves, removing items from memory that are no longer needed (for example - products that were loaded for a job, but aren't needed anymore). This is because the worker script is a long running process, so if things are left floating the process can quickly run out of memory and need to be restarted.
   * Process management tools such as **supervisord** (http://supervisord.org/) can be used to restart a task when a memory limit is reached - but ensure that if your task uses a lot of memory just as a matter of course - that it isn't tripping this limit.
+ * Using a slower queueing service (Such as **Amazon SQS**) may not result in a fast enough turnaround of workers. So if the queue is being used for something like **update on save** index updates - the indexes may take a few minutes to run after a user has saved a product
