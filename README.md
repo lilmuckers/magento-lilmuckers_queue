@@ -241,6 +241,7 @@ This will send a message to the configured queue to use the default queue, run t
 
 ## TODO
  * Set AWS and Pheanstalk to be installed with **PEAR** or **Composer**
+ * Do something sensible with **held** tasks on **Amazon SQS**
  * Backend interface to view queue statistics (tricky to make "multi-adapter")
  * Error reporting
  * Rabbit MQ Support
@@ -261,3 +262,5 @@ There's a few things I've tripped over when using this module in testing and in 
   * Ensure that workers clean up after themselves, removing items from memory that are no longer needed (for example - products that were loaded for a job, but aren't needed anymore). This is because the worker script is a long running process, so if things are left floating the process can quickly run out of memory and need to be restarted.
   * Process management tools such as **supervisord** (http://supervisord.org/) can be used to restart a task when a memory limit is reached - but ensure that if your task uses a lot of memory just as a matter of course - that it isn't tripping this limit.
  * Using a slower queueing service (Such as **Amazon SQS**) may not result in a fast enough turnaround of workers. So if the queue is being used for something like **update on save** index updates - the indexes may take a few minutes to run after a user has saved a product
+ * **Amazon SQS** doesn't support explicit retries, burying a task, or kicking a task. As such these things don't actually do anything within the system.
+  * Items will be automatically rerun after the **60 second** run time has elapsed.
