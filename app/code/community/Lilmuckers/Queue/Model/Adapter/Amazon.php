@@ -75,8 +75,8 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
     {
         //we have a stored connection
         if (!$this->_sqsClient) {
-            $_config           = $this->_getConfiguration();
-            $this->_sqsClient  = SqsClient::factory(
+            $_config          = $this->_getConfiguration();
+            $this->_sqsClient = SqsClient::factory(
                 array(
                     'key'    => $_config['key'],
                     'secret' => $_config['secret'],
@@ -130,7 +130,7 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
     protected function _addToQueue($queue, Lilmuckers_Queue_Model_Queue_Task $task)
     {
         //load the default prioriy, delay and ttr data
-        $_delay    = is_null($task->getDelay())     ? null    : $task->getDelay();
+        $_delay = is_null($task->getDelay()) ? null : $task->getDelay();
         
         //load the json string for the task
         $_data = $task->exportData();
@@ -173,7 +173,7 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
             );
             
             //Append the additional queue parameters if applicable
-            if($_queueAttr = $this->_getDefaultQueueAttr()){
+            if ($_queueAttr = $this->_getDefaultQueueAttr()) {
                 $_queueParams['Attributes'] = $_queueAttr;
             }
             
@@ -259,7 +259,7 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
             try{
                 $_task = $this->_reserveFromQueue($_queue);
             } catch(Lilmuckers_Queue_Model_Adapter_Timeout_Exception $e) {
-                //ignore and continue
+                //ignore this exception and skip to the next queue 
                 continue;
             }
             return $_task;
@@ -366,6 +366,8 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
      * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
      * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to hold
      * 
+     * @TODO Enable some form of message holding
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
     protected function _hold(
@@ -382,6 +384,8 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
      * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
      * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to unhold
      * 
+     * @TODO Enable some form of message unholding
+     * 
      * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
      */
     protected function _unhold(
@@ -397,6 +401,8 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
      * 
      * @param int                                   $number The number of held tasks to kick
      * @param Lilmuckers_Queue_Model_Queue_Abstract $queue  The queue to kick from
+     * 
+     * @TODO Enable some form of multiple message unholding
      * 
      * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
