@@ -2,6 +2,7 @@
 
 ### 0.2.3
  * Added support for Amazon SQS
+ * Added a way to send a manual queue item to the backend
 
 ### 0.2.2
  * Fixed an issue with custom queue handler instantiation
