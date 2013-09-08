@@ -248,6 +248,7 @@ This will send a message to the configured queue to use the default queue, run t
  * Gearman Support
  * NoSQL Queue support (for example - mongodb, redis, etc)
  * Memcached queue support
+ * SQL Queue Support (for graceful decay if situations change - not because I think it's a good idea)
 
 ## Gotchas
 There's a few things I've tripped over when using this module in testing and in implementation:
