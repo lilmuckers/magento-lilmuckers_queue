@@ -221,6 +221,33 @@ Have a nice cup of tea and a sit down.
 ## Testing
 The unit tests are built with [EcomDev_PHPUnit](https://github.com/EcomDev/EcomDev_PHPUnit) and should run with the standard test-suite.
 
+### Test Coverage
+The tests cover:
+ * Workers
+ * Queues
+ * Tasks
+ * beanstalkd adapter
+
+The AmazonSQS adapter isn't covered by the unit tests because of reasons.
+
+### Connection Testing
+You can manually send messages to the queue with the following command:
+```bash
+ $ cd /path/to/magento/shell/
+ $ php -f queue.php --send "default:test:hello"
+```
+
+This will send a message to the configured queue to use the default queue, run the test worker, and send the message of "hello". This could then be viewed with your favorite monitoring software for your queue backend.
+
+## TODO
+ * Set AWS and Pheanstalk to be installed with **PEAR** or **Composer**
+ * Backend interface to view queue statistics (tricky to make "multi-adapter")
+ * Error reporting
+ * Rabbit MQ Support
+ * Gearman Support
+ * NoSQL Queue support (for example - mongodb, redis, etc)
+ * Memcached queue support
+
 ## Gotchas
 There's a few things I've tripped over when using this module in testing and in implementation:
  * **Queues aren't reliable**
