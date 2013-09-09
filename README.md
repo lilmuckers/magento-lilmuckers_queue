@@ -13,6 +13,8 @@ Each queue has it's own handler, so multiple tasks that are a part of the same q
   * Using Pheanstalk - https://github.com/pda/pheanstalk/
  * Amazon SQS - http://aws.amazon.com/sqs/
   * Using Amazon AWS SDK
+ * Gearman - http://gearman.org/
+  * Using PHP Gearman Library - http://www.php.net/manual/en/book.gearman.php
   
 ## Installation
 I built this with **modgit** (https://github.com/jreinke/modgit) in mind - and so if you have modgit installed:
@@ -73,6 +75,24 @@ For a simple **Amazon SQS** configuration you'd merge this into your `local.xml`
 </config>
 
 ```
+
+For a **Gearman** configuration, you'd merge this into your `local.xml`:
+
+```xml
+<?xml version="1.0"?>
+<config>
+    <global>
+    
+        <queue>
+            <backend>gearman</backend>
+        </queue>
+        
+    </global>
+</config>
+```
+
+#### Advanced Configuration
+See the file `app/etc/local.xml.queuesample` for advanced configuration examples.
 
 ### Creating a queue handler, defining workers, and sending a task to the queue
  * Define a queue in you modules `config.xml`, with the workers that exist in that queue. All workers are run as `singletons`.
@@ -241,11 +261,10 @@ This will send a message to the configured queue to use the default queue, run t
 
 ## TODO
  * Set AWS and Pheanstalk to be installed with **PEAR** or **Composer**
- * Do something sensible with **held** tasks on **Amazon SQS**
+ * Do something sensible with **held** tasks on **Amazon SQS** and **Gearman**
  * Backend interface to view queue statistics (tricky to make "multi-adapter")
  * Error reporting
  * Rabbit MQ Support
- * Gearman Support
  * NoSQL Queue support (for example - mongodb, redis, etc)
  * Memcached queue support
  * SQL Queue Support (for graceful decay if situations change - not because I think it's a good idea)
@@ -263,8 +282,11 @@ There's a few things I've tripped over when using this module in testing and in 
   * Ensure that workers clean up after themselves, removing items from memory that are no longer needed (for example - products that were loaded for a job, but aren't needed anymore). This is because the worker script is a long running process, so if things are left floating the process can quickly run out of memory and need to be restarted.
   * Process management tools such as **supervisord** (http://supervisord.org/) can be used to restart a task when a memory limit is reached - but ensure that if your task uses a lot of memory just as a matter of course - that it isn't tripping this limit.
  * **Amazon SQS**
-  * Due to the fact **SQS** doesn't explicitly support watching multiple queues, if you are running one worker stream (`php -f shell/queue.php --watch all`) it can take time for a queue message to be received. It is currently designed to wait 5 seconds on each queue for a message before moving on to the next one. This is slower than 0 second polling, but much less cpu intensive. You can override this by specifying a different **wait** time in the `local.xml` on the path `global/queue/amazonsqs/connection/wait` (Default is **5** seconds). Alternatively you can specify a worker stream for each queue, which will handily overcome the issue.
+  * Due to the fact **SQS** doesn't explicitly support watching multiple queues, if you are running one worker stream (`php -f shell/queue.php --watch all`) it can take time for a queue message to be received. It is currently designed to wait 5 seconds on each queue for a message before moving on to the next one. This is slower than 0 second polling, but much less cpu and networking intensive. You can override this by specifying a different **wait** time in the `local.xml` on the path `global/queue/amazonsqs/connection/wait` (Default is **5** seconds). Alternatively you can specify a worker stream for each queue, which will handily overcome the issue.
   * Due to the potential delay you can experience, some tasks may not be executed as fast as you would prefer. This could be an issue when using an asyncronous indexing module - where an index may not be updated for 20 seconds or so after the save has completed. This could cause some confusing effects to the user.
   * **SQS** doesn't support message **priority** - so the queue doesn't process high priority events faster than lower priority ones.
   * **SQS** doesn't support explicit **retry** on a message, so instead the module waits for the **ttr** to lapse and the message to be put back in the queue organically.
   * **SQS** doesn't support explicit **holding** or **unholding** a task. As such these things don't actually do anything within the system. So a task that has been put on **hold** will instead be retried on a loop. There is a **TODO** to look at improving this.
+ * **Gearman**
+  * As with **Amazon SQS**, **Gearman** doesn't support explicitly holding and unholding tasks. However, contrary to **SQS**, tasks will just be dropped from the queue, so at least these ones won't loop, however, they won't be stored for review.
+  * Priority isn't as granular as it is with **beanstalkd** so will split the priority number into ranges and define them as `0-340` - High, `341-682` - Normal, `683-1024` - Low.

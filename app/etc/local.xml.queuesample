@@ -13,7 +13,7 @@
     <global>
         
         <queue>
-            <backend>beanstalkd</backend><!-- beanstalkd / amazonsqs -->
+            <backend>beanstalkd</backend><!-- beanstalkd / amazonsqs / gearman -->
             
             <!-- beanstalkd specific config -->
             <beanstalkd>
@@ -32,6 +32,20 @@
                     <region></region>
                 </connection>
             </amazonsqs>
+            
+            <!-- Gearman specific config -->
+            <gearman>
+                <servers>
+                    <server>
+                        <host>127.0.0.1</host>
+                        <port>4730</port>
+                    </server>
+                    <server1>
+                        <host>192.128.0.1</host>
+                        <host>4227</host>
+                    </server1>
+                </servers>
+            </gearman>
         </queue>
         
     </global>

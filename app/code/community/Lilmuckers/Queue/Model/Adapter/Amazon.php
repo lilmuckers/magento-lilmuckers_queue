@@ -91,7 +91,7 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
     /**
      * Instantiate the connection
      * 
-     * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
+     * @return Lilmuckers_Queue_Model_Adapter_Abstract
      */
     protected function _loadConnection()
     {
@@ -125,7 +125,7 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
      * @param string                            $queue The queue to use
      * @param Lilmuckers_Queue_Model_Queue_Task $task  The task to assign
      * 
-     * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
+     * @return Lilmuckers_Queue_Model_Adapter_Amazon
      */
     protected function _addToQueue($queue, Lilmuckers_Queue_Model_Queue_Task $task)
     {
@@ -149,7 +149,7 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
             $_params['DelaySeconds'] = $_delay;
         }
         
-        //send this data to the beanstalkd server
+        //send this data to the amazon sqs server
         $this->getConnection()
             ->sendMessage($_params);
             
@@ -312,7 +312,7 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
      * 
      * @param Lilmuckers_Queue_Model_Queue_Task $task The task to renew
      * 
-     * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
+     * @return Lilmuckers_Queue_Model_Adapter_Amazon
      */
     protected function _touch(Lilmuckers_Queue_Model_Queue_Task $task)
     {
@@ -338,7 +338,7 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
      * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
      * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to remove
      * 
-     * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
+     * @return Lilmuckers_Queue_Model_Adapter_Amazon
      */
     protected function _remove(
         Lilmuckers_Queue_Model_Queue_Abstract $queue, 
@@ -368,7 +368,7 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
      * 
      * @TODO Enable some form of message holding
      * 
-     * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
+     * @return Lilmuckers_Queue_Model_Adapter_Amazon
      */
     protected function _hold(
         Lilmuckers_Queue_Model_Queue_Abstract $queue, 
@@ -386,7 +386,7 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
      * 
      * @TODO Enable some form of message unholding
      * 
-     * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
+     * @return Lilmuckers_Queue_Model_Adapter_Amazon
      */
     protected function _unhold(
         Lilmuckers_Queue_Model_Queue_Abstract $queue, 
@@ -420,7 +420,7 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
      * @param Lilmuckers_Queue_Model_Queue_Abstract $queue The queue handler to use
      * @param Lilmuckers_Queue_Model_Queue_Task     $task  The task to retry
      * 
-     * @return Lilmuckers_Queue_Model_Adapter_Beanstalk
+     * @return Lilmuckers_Queue_Model_Adapter_Amazon
      */
     protected function _retry(
         Lilmuckers_Queue_Model_Queue_Abstract $queue, 

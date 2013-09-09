@@ -20,6 +20,39 @@
 abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
 {
     /**
+     * Run Inline Flag
+     * 
+     * This is used to flag if the adapter will run the function inline itself.
+     * This is mostly for systems such as Gearman that work off direct callbacks
+     * rather than purely messaging back and forth.
+     * 
+     * @var bool
+     */
+    protected $_runInline = false;
+    
+    /**
+     * Return the runInline flag
+     * 
+     * @return bool
+     */
+    public function getRunInline()
+    {
+        return $this->_runInline;
+    }
+    
+    /**
+     * If the adapter is to be be run inline, this is the method to call
+     * 
+     * @param array $queues The queues to attach to
+     * 
+     * @return Lilmuckers_Queue_Model_Adapter_Abstract
+     */
+    public function run($queues)
+    {
+        return $this;
+    }
+    
+    /**
      * Add a task to the queue
      * 
      * @param Lilmuckers_Queue_Model_Queue      $queue The queue identifier

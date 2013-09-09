@@ -12,7 +12,7 @@
 <config>
     <modules>
         <Lilmuckers_Queue>
-            <version>0.2.3</version>
+            <version>0.2.4</version>
         </Lilmuckers_Queue>
     </modules>
     
@@ -48,6 +48,9 @@
                 <amazonsqs>
                     <class>lilqueue/adapter_amazon</class>
                 </amazonsqs>
+                <gearman>
+                    <class>lilqueue/adapter_gearman</class>
+                </gearman>
             </adapters>
             <beanstalkd>
                 <servers>
@@ -66,6 +69,14 @@
                     <wait>5</wait>
                 </connection>
             </amazonsqs>
+            <gearman>
+                <servers>
+                    <server>
+                        <host>127.0.0.1</host>
+                        <port>4730</port>
+                    </server>
+                </servers>
+            </gearman>
         </queue>
         
     </global>

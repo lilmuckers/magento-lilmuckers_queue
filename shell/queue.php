@@ -170,18 +170,26 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
      */
     protected function _watch($queues)
     {
+        //get the adapter object
+        $_adapter = $this->_helper->getAdapter();
+    
         //start the infinite while loop
         while (true) {
             try {
-            
-                //watch the queue list
-                $_task = $this->_helper->getAdapter()->getTask($queues);
                 
-                //flag the task as a worker so it instantiates the queue properly
-                $_task->setIsWorker();
+                if ($_adapter->getRunInline()) {
+                    //the adapter is built to explicitly run itself.
+                    $_adapter->run($queues);
+                } else {
+                    //watch the queue list
+                    $_task = $_adapter->getTask($queues);
                 
-                //run the task via the queue
-                $_task->getQueue()->runTask($_task);
+                    //flag the task as a worker so it instantiates the queue properly
+                    $_task->setIsWorker();
+                
+                    //run the task via the queue
+                    $_task->getQueue()->runTask($_task);
+                }
                 
             } catch(Lilmuckers_Queue_Model_Adapter_Timeout_Exception $e) {
                 //timeout waiting for job, ignore.
