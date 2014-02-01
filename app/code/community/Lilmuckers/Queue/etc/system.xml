@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento Simple Asyncronous Queuing Module
+ *
+ * @category    Lilmuckers
+ * @package     Lilmuckers_Queue
+ * @copyright   Copyright (c) 2014 Mage-Hackaction (http://www.mage-hackathon.de/)
+ * @license     http://choosealicense.com/licenses/mit/
+ */
+-->
+<config>
+    <sections>
+        <lilqueue translate="label" module="lilqueue">
+            <label>Queue worker</label>
+            <frontend_type>text</frontend_type>
+            <sort_order>40</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general>
+                    <label>General</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <queue_method>
+                            <label>Queue parse method</label>
+                            <source_model>lilqueue/system_config_source_lilqueue_queueMethod</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>1</sort_order>
+                        </queue_method>
+                    </fields>
+                </general>
+                <indexer>
+                    <label>Indexer</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enabled>
+                            <label>Enabled for the indexers</label>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>10</sort_order>
+                        </enabled>
+                        <retry_timeout>
+                            <label>Retry timeout</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </retry_timeout>
+                        <priority>
+                            <label>Priority</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </priority>
+                        <delay>
+                            <label>Delay</label>
+                            <comment>Time delayed in seconds</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </delay>
+                        <ttr>
+                            <label>Time to run</label>
+                            <comment>Time to run in seconds</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </ttr>
+                    </fields>
+                </indexer>
+            </groups>
+        </lilqueue>
+    </sections>
+</config>

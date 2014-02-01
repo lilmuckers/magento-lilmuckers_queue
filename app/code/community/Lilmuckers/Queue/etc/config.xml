@@ -12,34 +12,36 @@
 <config>
     <modules>
         <Lilmuckers_Queue>
-            <version>0.2.4</version>
+            <version>1.0.0</version>
         </Lilmuckers_Queue>
     </modules>
-    
-    <phpunit>
 
+    <phpunit>
         <suite>
             <modules>
-                <Lilmuckers_Queue />
+                <Lilmuckers_Queue/>
             </modules>
         </suite>
-
     </phpunit>
-    
+
     <global>
-    
         <models>
             <lilqueue>
                 <class>Lilmuckers_Queue_Model</class>
             </lilqueue>
+            <index>
+                <rewrite>
+                    <process>Lilmuckers_Queue_Model_Indexer_Process</process>
+                </rewrite>
+            </index>
         </models>
-        
+
         <helpers>
             <lilqueue>
                 <class>Lilmuckers_Queue_Helper</class>
             </lilqueue>
         </helpers>
-        
+
         <queue>
             <adapters>
                 <beanstalkd>
@@ -78,9 +80,20 @@
                 </servers>
             </gearman>
         </queue>
-        
     </global>
-    
+    <crontab>
+        <jobs>
+            <lilqueue_index>
+                <schedule>
+                    <cron_expr>* * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>lilmuckers_queue/observer::lilqueue_index</model>
+                </run>
+            </lilqueue_index>
+        </jobs>
+    </crontab>
+
     <queues>
         <default>
             <label>Default Queue</label>
@@ -92,6 +105,16 @@
                 </test>
             </workers>
         </default>
+        <indexer>
+            <label>Indexing queue</label>
+            <class>lilqueue/queue</class>
+            <workers>
+                <indexer>
+                    <class>lilqueue/indexer_worker</class>
+                    <method>run</method>
+                </indexer>
+            </workers>
+        </indexer>
         <unit_tests>
             <label>Unit Test Queue</label>
             <class>lilqueue/queue</class>
@@ -115,5 +138,19 @@
             </workers>
         </unit_tests>
     </queues>
-    
+
+    <default>
+        <lilqueue>
+            <general>
+                <queue_method>0</queue_method>
+            </general>
+            <indexer>
+                <enabled>1</enabled>
+                <retry_timeout>30</retry_timeout>
+                <delay>0</delay>
+                <priority>1024</priority>
+                <ttr>0</ttr>
+            </indexer>
+        </lilqueue>
+    </default>
 </config>
