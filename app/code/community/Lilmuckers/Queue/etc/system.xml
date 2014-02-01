@@ -1,28 +1,12 @@
 <?xml version="1.0"?>
 <!--
 /**
- * Magento
+ * Magento Simple Asyncronous Queuing Module
  *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Academic Free License (AFL 3.0)
- * that is bundled with this package in the file LICENSE_AFL.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/afl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
- * @category    Mage
- * @package     Mage_Catalog
- * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ * @category    Lilmuckers
+ * @package     Lilmuckers_Queue
+ * @copyright   Copyright (c) 2014 Mage-Hackaction (http://www.mage-hackathon.de/)
+ * @license     http://choosealicense.com/licenses/mit/
  */
 -->
 <config>
@@ -36,7 +20,20 @@
             <show_in_store>1</show_in_store>
             <groups>
                 <general>
-
+                    <label>General</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <queue_method>
+                            <label>Queue parse method</label>
+                            <source_model>lilqueue/system_config_source_lilqueue_queueMethod</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>1</sort_order>
+                        </queue_method>
+                    </fields>
                 </general>
                 <indexer>
                     <label>Indexer</label>
@@ -44,14 +41,48 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <catalog>
-                            <label>Enabled for catalog</label>
+                        <enabled>
+                            <label>Enabled for the indexers</label>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <sort_order>10</sort_order>
-                        </catalog>
+                        </enabled>
+                        <retry_timeout>
+                            <label>Retry timeout</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </retry_timeout>
+                        <priority>
+                            <label>Priority</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </priority>
+                        <delay>
+                            <label>Delay</label>
+                            <comment>Time delayed in seconds</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </delay>
+                        <ttr>
+                            <label>Time to run</label>
+                            <comment>Time to run in seconds</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </ttr>
                     </fields>
                 </indexer>
             </groups>

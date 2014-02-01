@@ -173,25 +173,4 @@ class Lilmuckers_Queue_Helper_Data extends Mage_Core_Helper_Abstract
         
         return $_queues->asArray();
     }
-
-    public function objectToArray($obj)
-    {
-        if (is_object($obj)) {
-            // Gets the properties of the given object
-            // with get_object_vars function
-            $obj = get_object_vars($obj);
-        }
-
-        if (is_array($obj)) {
-            /*
-            * Return array converted to object
-            * Using __FUNCTION__ (Magic constant)
-            * for recursive call
-            */
-            return array_map(array($this, __FUNCTION__), $obj);
-        } else {
-            // Return array
-            return $obj;
-        }
-    }
 }
