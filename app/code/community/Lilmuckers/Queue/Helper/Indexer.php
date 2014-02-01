@@ -1,12 +1,11 @@
 <?php
 
 /**
- * NicheCommerce
- *
- * @category    NicheCommerce
- * @package     NicheCommerce
- * @copyright   Copyright (c) 2014 NicheCommerce. (http://nichecommerce.nl)
- * @author      Tim Vroom (tim@nichecommerce.nl)
+ * @category Lilmuckers
+ * @package  Lilmuckers_Queue
+ * @author   Tim Vroom <tim@timroom.nl>
+ * @license  MIT http://choosealicense.com/licenses/mit/
+ * @link     https://github.com/lilmuckers/magento-lilmuckers_queue
  */
 class Lilmuckers_Queue_Helper_Indexer extends Lilmuckers_Queue_Helper_Data
 {
