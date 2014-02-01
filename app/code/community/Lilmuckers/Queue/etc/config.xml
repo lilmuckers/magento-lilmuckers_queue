@@ -15,31 +15,36 @@
             <version>0.2.4</version>
         </Lilmuckers_Queue>
     </modules>
-    
+
     <phpunit>
 
         <suite>
             <modules>
-                <Lilmuckers_Queue />
+                <Lilmuckers_Queue/>
             </modules>
         </suite>
 
     </phpunit>
-    
+
     <global>
-    
+
         <models>
             <lilqueue>
                 <class>Lilmuckers_Queue_Model</class>
             </lilqueue>
+            <index>
+                <rewrite>
+                    <process>Lilmuckers_Queue_Model_Indexer_Process</process>
+                </rewrite>
+            </index>
         </models>
-        
+
         <helpers>
             <lilqueue>
                 <class>Lilmuckers_Queue_Helper</class>
             </lilqueue>
         </helpers>
-        
+
         <queue>
             <adapters>
                 <beanstalkd>
@@ -78,9 +83,9 @@
                 </servers>
             </gearman>
         </queue>
-        
+
     </global>
-    
+
     <queues>
         <default>
             <label>Default Queue</label>
@@ -92,6 +97,14 @@
                 </test>
             </workers>
         </default>
+        <indexer>
+            <workers>
+                <indexer>
+                    <class>lilqueue/indexer_worker</class>
+                    <method>run</method>
+                </indexer>
+            </workers>
+        </indexer>
         <unit_tests>
             <label>Unit Test Queue</label>
             <class>lilqueue/queue</class>
@@ -115,5 +128,11 @@
             </workers>
         </unit_tests>
     </queues>
-    
+    <default>
+        <lilqueue>
+            <indexer>
+                <enabled>1</enabled>
+            </indexer>
+        </lilqueue>
+    </default>
 </config>

@@ -1,0 +1,19 @@
+{
+    "name": "lilmuckers/magento-lilmuckers_queue",
+    "description": "Queueing the multiple processes",
+    "type": "magento-module",
+    "authors": [
+        {
+            "name": "Tim Vroom",
+            "email": "tim@timvroom.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*"
+    },
+    "require-dev": {
+        "ivanchepurnyi/ecomdev_phpunit": "*"
+    }
+
+}
