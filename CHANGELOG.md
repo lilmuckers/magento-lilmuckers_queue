@@ -1,5 +1,8 @@
 ## Changelog
 
+### 0.2.6 - 2014-03-14
+ * Removed the AWS library from the repo, in favour of pear.
+
 ### 0.2.5 - 2014-03-14
  * Added database connection handling, such that the database connection is closed before the tasks are reserved, abd reopened once they are. This is because there could be a large timescale between each task, and we don't want the workers to die just because we didn't have a database connection.
  * Moved the beakstalk timeout exception so that it is thrown correctly.

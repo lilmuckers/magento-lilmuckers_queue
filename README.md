@@ -52,7 +52,11 @@ The configuration is similar to the `cache` configuration, and is held within th
 
 ```
 
-For a simple **Amazon SQS** configuration you'd merge this into your `local.xml`:
+For a simple **Amazon SQS** configuration, you must install AWS libs by pear:
+```bash
+pear -D auto_discover=1 install pear.amazonwebservices.com/sdk
+```
+and you'd merge this into your `local.xml`:
 
 ```xml
 <?xml version="1.0"?>

@@ -12,7 +12,7 @@
 <config>
     <modules>
         <Lilmuckers_Queue>
-            <version>0.2.5</version>
+            <version>0.2.6</version>
         </Lilmuckers_Queue>
     </modules>
     
