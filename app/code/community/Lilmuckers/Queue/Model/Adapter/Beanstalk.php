@@ -165,6 +165,8 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
      * @param array $queues The queues to reserve from
      * 
      * @return Lilmuckers_Queue_Model_Queue_Task
+     * 
+     * @throws Lilmuckers_Queue_Model_Adapter_Timeout_Exception When the connection times out
      */
     protected function _reserveFromQueues($queues)
     {
@@ -188,6 +190,13 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
         $_job = $this->getConnection()
             ->reserve();
         
+        //if there's a timeout instead of a job then throw the timeout exception
+        if (!$_job) {
+            throw new Lilmuckers_Queue_Model_Adapter_Timeout_Exception(
+                'Timeout watching queue, no job delivered in time limit'
+            );
+        }
+        
         return $this->_prepareJob($_job);
     }
     
@@ -197,18 +206,9 @@ class Lilmuckers_Queue_Model_Adapter_Beanstalk extends Lilmuckers_Queue_Model_Ad
      * @param Pheanstalk_Job $job The Pheanstalk job
      * 
      * @return Lilmuckers_Queue_Model_Queue_Task
-     * 
-     * @throws Lilmuckers_Queue_Model_Adapter_Timeout_Exception When the connection times out
      */
     protected function _prepareJob(Pheanstalk_Job $job)
     {
-        //if there's a timeout instead of a job then throw the timeout exception
-        if (!$job) {
-            throw new Lilmuckers_Queue_Model_Adapter_Timeout_Exception(
-                'Timeout watching queue, no job delivered in time limit'
-            );
-        }
-        
         //instantiate the task
         $_task = Mage::getModel(Lilmuckers_Queue_Helper_Data::TASK_HANDLER);
         $_task->setJob($job);

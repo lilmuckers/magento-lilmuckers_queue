@@ -266,8 +266,14 @@ class Lilmuckers_Queue_Model_Adapter_Gearman extends Lilmuckers_Queue_Model_Adap
         //set it as a worker task
         $_task->setIsWorker();
         
+        //restart the database connection
+        $this->reopenDbConnection();
+        
         //run the task via the queue
         $_task->getQueue()->runTask($_task);
+        
+        //close the database connection
+        $this->closeDbConnection();
     }
     
     /**

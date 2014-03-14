@@ -114,10 +114,11 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     {
         if (is_array($queue)) {
             //retrieve and reserve the next job from a list of queues
-            return $this->_reserveFromQueues($queue);
+            $_task = $this->_reserveFromQueues($queue);
         } else {
-            return $this->_reserveFromQueue($queue);
+            $_task = $this->_reserveFromQueue($queue);
         }
+        return $_task;
     }
     
     /**
@@ -407,4 +408,28 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
     abstract protected function _getUnreservedHeldTask(
         Lilmuckers_Queue_Model_Queue_Abstract $queue
     );
+    
+    /**
+     * Close the database connection
+     * 
+     * @return Lilmuckers_Queue_Model_Adapter_Abstract
+     */
+    public function closeDbConnection()
+    {
+        $_db = Mage::getSingleton('core/resource')->getConnection('core_read');
+        $_db->closeConnection();
+        return $this;
+    }
+    
+    /**
+     * Reopen the database connection
+     * 
+     * @return Lilmuckers_Queue_Model_Adapter_Abstract
+     */
+    public function reopenDbConnection()
+    {
+        $_db = Mage::getSingleton('core/resource')->getConnection('core_read');
+        $_db->getConnection();
+        return $this;
+    }
 }
