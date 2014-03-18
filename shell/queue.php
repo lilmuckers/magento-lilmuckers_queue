@@ -191,7 +191,7 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
                     $_task = $_adapter->getTask($queues);
                     
                     //this is to open any DB functions that may have been closed
-                    $this->reopenDbConnection();
+                    $_adapter->reopenDbConnection();
                     
                     //flag the task as a worker so it instantiates the queue properly
                     $_task->setIsWorker();
