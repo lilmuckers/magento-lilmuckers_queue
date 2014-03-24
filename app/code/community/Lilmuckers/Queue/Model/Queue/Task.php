@@ -27,12 +27,13 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
     /**
      * Task status codes
      */
-    const TASK_IDLE         = 0;
-    const TASK_SUCCESS      = 200;
-    const TASK_RETRY        = 201;
-    const TASK_HOLD         = 202;
-    const TASK_ERROR        = 500;
-    const TASK_CONFIG_ERROR = 501;
+    const TASK_IDLE           = 0;
+    const TASK_SUCCESS        = 200;
+    const TASK_RETRY          = 201;
+    const TASK_HOLD           = 202;
+    const TASK_ERROR          = 500;
+    const TASK_CONFIG_ERROR   = 501;
+    const TASK_DATABASE_ERROR = 502;
     
     /**
      * The raw job object from the adapter
@@ -429,8 +430,15 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
         } catch (Lilmuckers_Queue_Model_Queue_Task_Exception $e) {
             //there's been an error with the worker config
             return self::TASK_CONFIG_ERROR;
+        } catch (PDOException $e) {
+            //there's been a database error - most likely a 
+            // connection timeout or something similar.
+            // log the exception to make debugging easier
+            Mage::logException($e);
+            return self::TASK_DATABASE_ERROR;
         } catch (Exception $e) {
             //there's a generic error with the worker itself
+            Mage::logException($e);
             return self::TASK_ERROR;
         }
     }

@@ -1,5 +1,8 @@
 ## Changelog
 
+### 0.2.7 - 2014-03-24
+ * Fixed an issue where rapid queue processing would brick the DB server.
+
 ### 0.2.6 - 2014-03-14
  * Removed the AWS library from the repo, in favour of pear.
 

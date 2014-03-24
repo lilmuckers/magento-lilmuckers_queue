@@ -205,6 +205,8 @@ abstract class Lilmuckers_Queue_Model_Queue_Abstract extends Varien_Object
      * @param Lilmuckers_Queue_Model_Queue_Task $task The task to run
      * 
      * @return Lilmuckers_Queue_Model_Queue_Abstract
+     * 
+     * @throws Lilmuckers_Queue_Model_Queue_Db_Exception
      */
     public function runTask(Lilmuckers_Queue_Model_Queue_Task $task)
     {
@@ -218,11 +220,20 @@ abstract class Lilmuckers_Queue_Model_Queue_Abstract extends Varien_Object
                 $this->hold($task);
                 break;
             
+            case Lilmuckers_Queue_Model_Queue_Task::TASK_DATABASE_ERROR
+                //flag this for a retry, and then throw a DB error
+                //for the queue watcher script to catch
+                $this->retry($task);
+                throw new Lilmuckers_Queue_Model_Queue_Db_Exception(
+                    'Unspecified database connection error'
+                );
+                break;
+                
             case Lilmuckers_Queue_Model_Queue_Task::TASK_RETRY:
                 //this has been flagged for a retry
                 $this->retry($task);
                 break;
-            
+                
             case Lilmuckers_Queue_Model_Queue_Task::TASK_SUCCESS:
             default:
                 //for success and default behavour - remove from queue

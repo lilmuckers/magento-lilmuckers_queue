@@ -173,12 +173,6 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
         //get the adapter object
         $_adapter = $this->_helper->getAdapter();
         
-        //close the database connection
-        //This is because the worker will be running for some time
-        //and we want to make sure that we don't end up dying because of the DB connection
-        //being closed
-        $_adapter->closeDbConnection();
-        
         //start the infinite while loop
         while (true) {
             try {
@@ -198,12 +192,14 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
                 
                     //run the task via the queue
                     $_task->getQueue()->runTask($_task);
-                    
-                    //ensure the DB connection is closed 
-                    $_adapter->closeDbConnection();
                 }
-                
-            } catch(Lilmuckers_Queue_Model_Adapter_Timeout_Exception $e) {
+            } catch (Lilmuckers_Queue_Model_Queue_Db_Exception $e) {
+                //close the database connection
+                //This is because the worker will be running for some time
+                //and we want to make sure that we don't end up dying because 
+                //of the DB connection being closed
+                $_adapter->closeDbConnection();
+            } catch (Lilmuckers_Queue_Model_Adapter_Timeout_Exception $e) {
                 //timeout waiting for job, ignore.
             }
         }
