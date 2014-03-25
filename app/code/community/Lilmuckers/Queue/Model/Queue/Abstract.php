@@ -220,7 +220,7 @@ abstract class Lilmuckers_Queue_Model_Queue_Abstract extends Varien_Object
                 $this->hold($task);
                 break;
             
-            case Lilmuckers_Queue_Model_Queue_Task::TASK_DATABASE_ERROR
+            case Lilmuckers_Queue_Model_Queue_Task::TASK_DATABASE_ERROR:
                 //flag this for a retry, and then throw a DB error
                 //for the queue watcher script to catch
                 $this->retry($task);
