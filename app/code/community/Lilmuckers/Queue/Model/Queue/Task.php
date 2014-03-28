@@ -430,6 +430,12 @@ class Lilmuckers_Queue_Model_Queue_Task extends Varien_Object
         } catch (Lilmuckers_Queue_Model_Queue_Task_Exception $e) {
             //there's been an error with the worker config
             return self::TASK_CONFIG_ERROR;
+        } catch (Zend_Db_Statement_Exception $e) {
+            //there's been a database error - most likely a 
+            // connection timeout or something similar.
+            // log the exception to make debugging easier
+            Mage::logException($e);
+            return self::TASK_DATABASE_ERROR;
         } catch (PDOException $e) {
             //there's been a database error - most likely a 
             // connection timeout or something similar.
