@@ -1,0 +1,15 @@
+{
+    "name": "lilmuckers/magento-lilmuckers_queue",
+    "type": "magento-module",
+    "license":"MIT",
+    "description":"A generic multi-adapter queuing system for magento.",
+    "authors":[
+        {
+            "name":"Patrick McKinley",
+            "email":"contact@patrick-mckinley.com"
+        }
+    ],
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
