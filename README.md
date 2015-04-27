@@ -2,7 +2,8 @@
 
 ## Update
 
-This version has been updated to fully work with Composer, the `aws-sdk` is pulled by composer instead of `PEAR`.
+This version has been updated to fully work with Composer, the `aws-sdk` is pulled by composer instead of `PEAR`.  
+It requires https://github.com/ajbonner/magento-composer-autoload in order to load the classes from `vendor`.
 
 ## Original description
 
