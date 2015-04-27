@@ -1,5 +1,5 @@
 {
-    "name": "lilmuckers/magento-lilmuckers_queue",
+    "name": "jgautheron/magento-lilmuckers_queue",
     "type": "magento-module",
     "license":"MIT",
     "description":"A generic multi-adapter queuing system for magento.",
@@ -10,6 +10,7 @@
         }
     ],
     "require": {
-        "magento-hackathon/magento-composer-installer": "*"
+        "magento-hackathon/magento-composer-installer": "*",
+        "aws/aws-sdk-php": "2.8.2"
     }
 }
