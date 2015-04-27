@@ -1,5 +1,11 @@
 # Lilmuckers_Queue
 
+## Update
+
+This version has been updated to fully work with Composer, the `aws-sdk` is pulled by composer instead of `PEAR`.
+
+## Original description
+
 A generic multi-adapter queuing system for magento.
 
 This module is primarily aimed at developers who need a reliable queue management system for performing asyncronous tasks. This was built because there wasn't a decent queue management module within magento or the community that filled all my requirements. This also avoids the issues that can exist with database and cron based queueing systems (such as available with Magent Enterprise)
