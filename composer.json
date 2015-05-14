@@ -1,5 +1,6 @@
 {
-    "name": "jgautheron/magento-lilmuckers_queue",
+    "name": "jgautheron/magento-queue",
+    "version": "1.0.0",
     "type": "magento-module",
     "license":"MIT",
     "description":"A generic multi-adapter queuing system for magento.",
