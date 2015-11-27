@@ -41,7 +41,7 @@ class Lilmuckers_Shell_Queue extends Mage_Shell_Abstract
     public function run()
     {
         //instantiate the helper
-        $this->_helper = $this->_factory->getHelper('lilqueue');
+	$this->_helper = Mage::helper('lilqueue');
         
         //checkif the user wanted a list
         if ($this->getArg('list')) {
