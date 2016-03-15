@@ -8,9 +8,11 @@
  * @license     http://choosealicense.com/licenses/mit/
  */
 
-//include the AWS auto-loader, because the weird namespacing doesn't play nice
-//with Magentos auto-loader.
-require 'AWSSDKforPHP/aws.phar';
+if (!class_exists('Aws\Sqs\SqsClient')) {
+    //include the AWS auto-loader, because the weird namespacing doesn't play nice
+    //with Magentos auto-loader.
+    require 'AWSSDKforPHP/aws.phar';
+}
 
 //use the namespaces we need
 use Aws\Sqs\Enum\QueueAttribute;
