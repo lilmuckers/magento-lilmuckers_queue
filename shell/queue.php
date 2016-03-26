@@ -7,8 +7,14 @@
  * @copyright   Copyright (c) 2013 Patrick McKinley (http://www.patrick-mckinley.com)
  * @license     http://choosealicense.com/licenses/mit/
  */
- 
-require_once 'abstract.php';
+
+// This allows the script to run without shell/ being the current working dir.
+$relativePath = dirname($_SERVER['SCRIPT_FILENAME']);
+if ($relativePath && file_exists($relativePath . '/abstract.php')) {
+    require_once $relativePath . '/abstract.php';
+} else {
+    require_once 'abstract.php';
+}
 
 /**
  * Queue processor script
