@@ -416,8 +416,10 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
      */
     public function closeDbConnection()
     {
+        Mage::dispatchEvent('lilmuckers_queue_close_db_connection_before');
         $_db = Mage::getSingleton('core/resource')->getConnection('core_read');
         $_db->closeConnection();
+        Mage::dispatchEvent('lilmuckers_queue_close_db_connection_after', array('connection' => $_db));
         return $this;
     }
     
@@ -428,8 +430,10 @@ abstract class Lilmuckers_Queue_Model_Adapter_Abstract extends Varien_Object
      */
     public function reopenDbConnection()
     {
+        Mage::dispatchEvent('lilmuckers_queue_reopen_db_connection_before');
         $_db = Mage::getSingleton('core/resource')->getConnection('core_read');
         $_db->getConnection();
+        Mage::dispatchEvent('lilmuckers_queue_reopen_db_connection_after', array('connection' => $_db));
         return $this;
     }
 }
