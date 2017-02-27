@@ -293,7 +293,8 @@ class Lilmuckers_Queue_Model_Adapter_Amazon extends Lilmuckers_Queue_Model_Adapt
         }
         
         //pull off the only thing we're interested in - the first message
-        $_job = array_shift(array_values($job->get('Messages')));
+        $_messages = array_values($job->get('Messages'));    //PHP 7 fix
+        $_job = array_shift($_messages);
         
         //set the queue
         $_job['Queue'] = $queue;
